@@ -3,7 +3,7 @@ Type: Package
 Title: Funciones de consulta de datos del Subsistema CLIMA
 Version: 0.1.0
 Author: Rediam
-Maintainer: Red de Información Ambiental de Andalucía
+Maintainer: marcortos mcorzot@outlook.es
 Description: Funciones de consulta de datos del Subsistema CLIMA.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -15,4 +15,5 @@ Imports:
     RCurl,
     XML
 RoxygenNote: 7.3.3
+
 
