@@ -39,7 +39,7 @@ password <- "usuario"
 
 ## 🔑 Solicitud de usuario avanzado
 
-Para usuarios que realizan trabajos para la Junta de Andalucía y entidades asociadas a la Red de Información Ambiental de Andalucía. Permite el acceso a todos los datos integrados incluyendo los de la Agencia Estatal de Meteorología. La autorización para ser registrado como usuario avanzado debe solicitarse a la **Consejería de Sostenibilidad y Medio Ambiente** en el siguiente enlace: [Solicitud de información Ambiental](https://ws041.juntadeandalucia.es/medioambiente/vea-web/faces/vi/procedimientoDetalle.xhtml).
+Para usuarios que realizan trabajos para la Junta de Andalucía y entidades asociadas a la Red de Información Ambiental de Andalucía. Permite el acceso a todos los datos integrados incluyendo los de la Agencia Estatal de Meteorología. La autorización para ser registrado como usuario avanzado debe solicitarse a la **Consejería de Sostenibilidad y Medio Ambiente** en el siguiente enlace: [Solicitud de información Ambiental](https://www.juntadeandalucia.es/medioambiente/portal/web/cae/detalle/-/asset_publisher/S16tVNj0etAT/content/solicitud-de-informaci-c3-b3n-ambiental/20151).
 
 ---
 ## 🧭 Obtener el ID de sesión
