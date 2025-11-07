@@ -62,14 +62,17 @@ getwsDatosIntradiariosMultiRaw <- function(idsesion,pkests,pkvars,pkfecs) {
   )
 
   # Llamada SOAP
-  response <- postForm(
-    uri = url,
-    .opts = list(
-      postfields = soapBody,
-      httpheader = httpHeader,
-      verbose = TRUE,
-      followlocation = TRUE
-    )
+  response <- call_with_retry(
+    expr = RCurl::postForm(
+      uri = url,
+      .opts = list(
+        postfields = soapBody,
+        httpheader = httpHeader,
+        verbose = TRUE,
+        followlocation = TRUE
+      )
+    ),
+    name = "getDatosIntradiarios (SOAP)"
   )
 
   # Parsear XML

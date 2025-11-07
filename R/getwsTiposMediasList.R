@@ -37,7 +37,7 @@ getwsTiposMediasList <- function(idsesion) {
   )
 
   # --- Descarga del XML directamente en memoria usando soap_get ---
-  xml_text <- soap_get(url_getTiposMediasList)
+  xml_text <- call_with_retry(soap_get(url_getTiposMediasList),"soap_get(getTiposMediasList)")
 
   # --- Parseo del XML ---
   doc <- xmlParse(xml_text)

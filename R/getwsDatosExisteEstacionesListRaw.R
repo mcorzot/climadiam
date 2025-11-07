@@ -42,7 +42,7 @@ getwsDatosExisteEstacionesListRaw <- function(idsesion,pkest = NULL) {
     }
 
   # --- Descarga del XML directamente en memoria usando soap_get ---
-  xml_text <- soap_get(url_getDatosExisteEstacionesList)
+  xml_text <- call_with_retry(soap_get(url_getDatosExisteEstacionesList),"soap_get(getDatosExisteEstacionesList)")
 
   # --- Parseo del XML ---
   doc <- xmlParse(xml_text)

@@ -84,6 +84,19 @@ getwsDatosDiarios2Raw <- function(idsesion,pkests,pkvars,pkfec_ini,pkfec_fin) {
     )
   )
 
+  response <- call_with_retry(
+    expr = RCurl::postForm(
+      uri = url,
+      .opts = list(
+        postfields = soapBody,
+        httpheader = httpHeader,
+        verbose = TRUE,
+        followlocation = TRUE
+      )
+    ),
+    name = "getDatosDiarios2 (SOAP)"
+  )
+
   # Parsear XML
   xml_doc <- xmlParse(response)
   ns <- c(soapenv = "http://schemas.xmlsoap.org/soap/envelope/")

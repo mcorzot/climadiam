@@ -26,7 +26,7 @@ getwsAreasClimaticasList <- function(idsesion) {
   )
 
   # Descargar el XML como texto (sin escribir a disco)
-  xml_text <- soap_get(url_getAreasClimaticasList)
+  xml_text <- call_with_retry(soap_get(url_getAreasClimaticasList),"soap_get(getAreasClimaticasList)")
 
   # Parsear el XML
   doc <- XML::xmlParse(xml_text)

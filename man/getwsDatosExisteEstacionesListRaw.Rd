@@ -24,7 +24,7 @@ interno de una estación, devuelve sólo el registro solicitado
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
-pkest <- '2306'
+pkest <- '183' # EARM22
 existencias_estaciones <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
 print(existencias_estaciones)
 

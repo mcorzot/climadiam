@@ -26,7 +26,7 @@ getwsComarcasList <- function(idsesion) {
   )
 
   # Descargar el XML como texto (sin escribir a disco)
-  xml_text <- soap_get(url_getComarcasList)
+  xml_text <- call_with_retry(soap_get(url_getComarcasList),"soap_get(getComarcasList)")
 
   # Parsear el XML
   doc <- XML::xmlParse(xml_text)

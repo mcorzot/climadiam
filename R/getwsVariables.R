@@ -27,7 +27,7 @@ getwsVariables <- function(cvariable,idsesion) {
     "http://www.juntadeandalucia.es/medioambiente/servtc5/climaws/services/ServicioClima",
     "?method=getVariables&pksesion=", idsesion,"&CVARIABLE=", cvariable
   )
-  xml_text <- soap_get(url)
+  xml_text <- call_with_retry(soap_get(url),"soap_get(getVariables)")
   doc <- xmlParse(xml_text)
   extract_nodes <- function(tag) xmlToDataFrame(nodes = XML::getNodeSet(doc, paste0("//", tag)), stringsAsFactors = FALSE)
 

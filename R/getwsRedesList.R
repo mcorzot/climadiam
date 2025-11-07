@@ -27,7 +27,7 @@ getwsRedesList <- function(idsesion) {
   )
 
   # Descargar el XML como texto (sin escribir a disco)
-  xml_text <- soap_get(url_getRedesList)
+  xml_text <- call_with_retry(soap_get(url_getRedesList),"soap_get(getRedesList)")
 
   # Parsear el XML
   doc <- XML::xmlParse(xml_text)

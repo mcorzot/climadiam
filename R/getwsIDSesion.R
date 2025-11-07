@@ -24,7 +24,7 @@ getwsIDSesion <- function(user, password) {
     "http://www.juntadeandalucia.es/medioambiente/servtc5/climaws/services/ServicioClima",
     "?method=getIDSesion&usuario=", user, "&password=", password
   )
-  xml_text <- soap_get(url)
+  xml_text <- call_with_retry(soap_get(url),"soap_get(getIDSesion)")
   doc <- xmlParse(xml_text)
   idsesion <- xmlToDataFrame(nodes = XML::getNodeSet(doc, "//getIDSesionReturn"), stringsAsFactors = FALSE)
   return(idsesion[1, 1])

@@ -27,7 +27,7 @@ getwsFechas <- function(date, idsesion) {
     "http://www.juntadeandalucia.es/medioambiente/servtc5/climaws/services/ServicioClima",
     "?method=getFechas&pksesion=", idsesion, "&FECHA=", date
   )
-  xml_text <- soap_get(url)
+  xml_text <- call_with_retry(soap_get(url),"soap_get(getFechas)")
   doc <- xmlParse(xml_text)
   pkfec <- xmlToDataFrame(nodes = XML::getNodeSet(doc, "//PKFEC"), stringsAsFactors = FALSE)
   fecha <- xmlToDataFrame(nodes = XML::getNodeSet(doc, "//FECHA"), stringsAsFactors = FALSE)
