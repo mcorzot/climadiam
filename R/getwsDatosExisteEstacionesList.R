@@ -27,14 +27,23 @@
 #'
 getwsDatosExisteEstacionesList <- function(idsesion,cestacion = NULL) {
 
-  # Se obtiene el pk de cestacion
-  estacion_df <- getwsEstaciones(cestacion,idsesion)
-  pkest <- estacion_df$PKEST
+  if(is.null(cestacion)){
+    # Si cestacion es NULL, pkest es NULL
+    pkest = NULL
+    # Se obtiene la lista completa de estaciones
+    estacion_df <- getwsEstacionesList(idsesion)
+    df <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
+    df <- merge(x = df, y = estacion_df, by.x = 'ESTPKEST', by.y = 'PKEST', all.x = TRUE)
+    df <- df[,c("ESTPKEST","FECFINDATOS","FECHACARGA","FECINICIODATOS","LEXISTE","PKDEE","CESTACION")]
 
-  # Se obtiene el pk de cestacion
-  df <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
+  } else {
 
-  df$CESTACION <- cestacion
-
+    # Se obtiene el pk de cestacion
+    estacion_df <- getwsEstaciones(cestacion,idsesion)
+    pkest <- estacion_df$PKEST
+    # Se obtiene el pk de cestacion
+    df <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
+    df$CESTACION <- cestacion
+    }
   return(df)
 }
