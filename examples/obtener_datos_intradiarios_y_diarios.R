@@ -12,7 +12,14 @@
 # 🔧 CONFIGURACIÓN INICIAL
 # -----------------------------------------------------------------------------
 
-# Cargar el paquete
+# Si es necesario, instalar el paquete 'remotes'
+#install.packages("remotes")
+#library(remotes)
+
+# Si es necesario, usando remotes, instalar el paquete 'climadiam' desde GitHub
+#remotes::install_github("mcorzot/climadiam")
+
+# Cargar el paquete climadiam
 library(climadiam)
 
 # Usuario y contraseña de acceso libre
@@ -140,3 +147,4 @@ head(datos_diarios2)
 
 # 🎯 FIN DEL SCRIPT
 ###############################################################################
+
