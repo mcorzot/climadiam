@@ -207,6 +207,12 @@ fechas      <- c("30/11/2020")
 datos_mensuales_int <- getwsDatosMensuales(idsesion, cestaciones, cvariables, fechas)
 ```
 
+## 🧪 Ejemplo práctico de uso
+
+A continuación se muestra un ejemplo completo que ilustra cómo, a partir de una selección de variables, obtener los **datos intradiarios de ayer** y los **datos diarios de antes de ayer**.
+
+📄 [Ver el script completo aquí](examples/obtener_datos_intradiarios_y_diarios.R)
+
 ---
 
 ## 📖 Autoría
