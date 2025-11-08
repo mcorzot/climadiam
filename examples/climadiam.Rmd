@@ -1,0 +1,207 @@
+---
+title: "climadiam: Paquete R para consultar datos climáticos de Andalucía"
+author: "mcorzot"
+date: "2025-11-08"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(ggplot2)
+library(dplyr)
+```
+
+# ✨ Resumen
+
+Primera versión del paquete **climadiam** para conectar con los
+servicios web del Subsistema de Climatología Ambiental (REDIAM). Permite
+consultar datos de estaciones meteorológicas de Andalucía de forma
+sencilla desde R.
+
+# 🌍 Descripción general
+
+El paquete permite conectarse al Subsistema CLIMA y facilita el acceso a
+datos meteorológicos y ambientales, incluyendo:
+
+-   Estaciones, variables, magnitudes y unidades
+-   Datos intradiarios, diarios y mensuales
+-   Intervalos temporales y fechas específicas
+
+------------------------------------------------------------------------
+
+# 🚀 Instalación y carga del paquete
+
+```{r install, collapse=TRUE}
+# Instalar 'remotes' si no está instalado
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+# Instalar 'climadiam' desde GitHub solo si no está instalado
+if (!requireNamespace("climadiam", quietly = TRUE)) {
+  remotes::install_github("mcorzot/climadiam")
+}
+# Cargar el paquete
+library(climadiam)
+```
+
+------------------------------------------------------------------------
+
+# 🔑 Acceso como usuario libre
+
+```{r credentials, collapse=TRUE}
+user <- "usuario"
+password <- "usuario"
+idsesion <- getwsIDSesion(user, password)
+```
+
+# 🧩 Funcionalidades principales
+
+-   Conexión a los servicios web del Subsistema CLIMA.
+-   Consulta de tablas maestras: comarcas, provincias, redes, variables,
+    estaciones.
+-   Descarga de datos intradiarios, diarios y mensuales.
+-   Obtención de intervalos temporales y fechas específicas.
+-   Compatible con entornos RStudio y scripts automatizados.
+-   En caso de realizar trabajos para la Junta de Andalucía o como socio de la Rediam, puede solicitar usuario avanzado.
+
+------------------------------------------------------------------------
+
+# 📚 Ejemplos básicos de uso
+
+```{r examples_basic, collapse=TRUE}
+estaciones <- getwsEstacionesList(idsesion)
+head(estaciones)
+datos <- getwsDatosDiarios(idsesion, "EARM22", "TD1", "26/10/2025")
+head(datos)
+```
+
+------------------------------------------------------------------------
+
+# 🧪 Ejemplo práctico de acceso a datos: selección de fechas, variables y estaciones 
+
+Obtención de fechas de ayer y antes de ayer: 
+
+```{r example_full_dates, collapse=TRUE}
+# Obtención de fechas a utilizar
+date1 <- Sys.Date() - 1
+date1_char <- format(date1, "%d/%m/%Y")
+date1_char
+date2 <- Sys.Date() - 2
+date2_char <- format(date2, "%d/%m/%Y")
+date2_char
+
+```
+
+Existencias de datos para la fecha de referencia (antes de ayer): 
+
+```{r example_full_exist, collapse=TRUE}
+# Existencias de datos (tomando como referencia el día - 2)
+existencias <- getwsDatosExisteEstacionesList(idsesion)
+existencias$FECINICIODATOS <- as.Date(existencias$FECINICIODATOS)
+existencias$FECFINDATOS <- as.Date(existencias$FECFINDATOS)
+sel_existencias <- existencias[!is.na(existencias$FECINICIODATOS) & existencias$FECINICIODATOS < date2 & existencias$FECFINDATOS > date2, ]
+head(sel_existencias)
+```
+
+Estaciones (teniendo en cuenta existencias) y variables: 
+
+```{r example_full_est_vars, collapse=TRUE}
+# Características básicas de las estaciones seleccionadas
+estaciones     <- getwsEstacionesList(idsesion)
+sel_estaciones <- estaciones[estaciones$CESTACION %in% sel_existencias$CESTACION, ]
+head(sel_estaciones)
+
+# Características de las variables seleccionadas
+cvariables <- c("TI1", "PI1", "TD1", "TD2", "TD4","PD23")
+variables <- data.frame()
+for (cvariable in cvariables) {
+  sel_variables <- getwsVariables(cvariable, idsesion)
+  variables <- rbind(variables, sel_variables)
+}
+head(variables)
+```
+
+# 🧪 Ejemplo práctico de acceso a datos intradiarios de ayer
+
+```{r example_full_intra, collapse=TRUE}
+# Datos intradiarios
+cvariables_int <- c("TI1","HI1")
+fechas_int <- date1_char
+datos_intradiarios1 <- data.frame()
+# Fragmentar la consulta por red para evitar saturar el servicio
+for (i in 1:length(unique(sel_estaciones$REDPKRED))) {
+  sel_estaciones_red <- sel_estaciones[sel_estaciones$REDPKRED == sel_estaciones$REDPKRED[i],]
+  sel_cestaciones <- sel_estaciones_red$CESTACION
+  sel_datos_intradiarios1 <- getwsDatosIntradiariosMulti(idsesion, sel_cestaciones, cvariables_int, fechas_int)
+  datos_intradiarios1 <- rbind(datos_intradiarios1,sel_datos_intradiarios1)
+}
+head(datos_intradiarios1)
+```
+
+# 🧪 Ejemplo práctico de acceso a datos diarios antes de ayer
+
+```{r example_full_dia, collapse=TRUE}
+# Datos diarios
+cestaciones <- sel_existencias$CESTACION
+cvariables_dia <- c("TD1","TD2","TD4","PD23")
+fechas_dia <- date2_char
+datos_diarios2 <- getwsDatosDiariosMulti(idsesion, cestaciones, cvariables_dia, fechas_dia)
+head(datos_diarios2)
+```
+
+------------------------------------------------------------------------
+
+# 📊 Visualización de ejemplo
+
+```{r plot_example, collapse=TRUE}
+# Selección de las cuatro primeras series y crear una columna de fecha-hora combinada
+cestaciones_graph <- unique(datos_intradiarios1$cestacion)[1:4]
+datos_int <- datos_intradiarios1 %>%
+  mutate(datetime = as.POSIXct(paste(fecha, hora), format = "%d/%m/%Y %H:%M")) %>%
+  filter(cestacion %in% cestaciones_graph & cvariable %in% c("TI1", "HI1"))
+
+# Crear el gráfico de temperaturas intradiarias por estación
+ggplot(datos_int, aes(x = datetime, y = valor, color = cvariable, group = cvariable)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  facet_wrap(~ cestacion, scales = "free_y") +
+  labs(
+    title = "Evolución intradiaria de Temperatura (TI1) y Humedad (HI1)",
+    x = "Fecha y hora",
+    y = "Valor",
+    color = "Variable"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
+
+# Selección de datos de TD1
+datos_dia <- datos_diarios2[datos_diarios2$cvariable == 'TD1',]
+# Histograma de frecuencias de datos de temperatura diaria
+ggplot(datos_dia, aes(x = valor)) +
+  geom_histogram(binwidth = 1, fill = "#2b8cbe", color = "white", alpha = 0.8) +
+  labs(
+    title = "Distribución de valores de TD1",
+    x = "Valor de TD1",
+    y = "Frecuencia"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5)
+  )
+```
+
+------------------------------------------------------------------------
+
+# 🧑‍💻 Autoría y contacto
+
+Desarrollado por la **Agencia de Medio Ambiente y Agua de Andalucía**
+para la **REDIAM – Subsistema CLIMA**. Repositorio oficial:
+<https://github.com/mcorzot/climadiam>
