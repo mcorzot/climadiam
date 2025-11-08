@@ -211,9 +211,10 @@ datos_mensuales_int <- getwsDatosMensuales(idsesion, cestaciones, cvariables, fe
 
 ## 🧪 Ejemplo práctico de uso
 
-A continuación se muestra un ejemplo completo que ilustra cómo, a partir de una selección de variables, obtener los **datos intradiarios de ayer** y los **datos diarios de antes de ayer**.
+A continuación se muestra un ejemplo completo que ilustra cómo, a partir de una selección de variables, se pueden obtener los **datos intradiarios de ayer** y los **datos diarios de antes de ayer** de todas las estaciones disponibles.
 
-📄 [Ver el script completo aquí](examples/obtener_datos_intradiarios_y_diarios.R)
+📄 [GitHub - climadiam.Rmd](examples/climadiam.Rmd)
+📄 [Ver el ejemplo en RPubs](https://rpubs.com/mcorzot/climadiam)
 
 ---
 
