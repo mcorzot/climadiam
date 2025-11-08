@@ -84,14 +84,11 @@ cvariables <- c(
   "TD1", "TD2", "TD4",
   "PD23", "HD1", "HD2", "HD4", "VD51"
 )
-
 variables <- data.frame()
-
 for (cvariable in cvariables) {
   sel_variables <- getwsVariables(cvariable, idsesion)
   variables <- rbind(variables, sel_variables)
 }
-
 head(variables)
 
 # -----------------------------------------------------------------------------
@@ -147,4 +144,5 @@ head(datos_diarios2)
 
 # 🎯 FIN DEL SCRIPT
 ###############################################################################
+
 
