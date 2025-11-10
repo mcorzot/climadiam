@@ -2,7 +2,7 @@ Package: climadiam
 Type: Package
 Title: Funciones de consulta de datos del Subsistema CLIMA
 Version: 0.1.0
-Author: Rediam
+Author: mcorzot
 Maintainer: mcorzot <mcorzot@outlook.es>
 Description: Funciones de consulta de datos del Subsistema CLIMA.
 License: MIT + file LICENSE

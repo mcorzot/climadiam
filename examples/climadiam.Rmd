@@ -104,8 +104,8 @@ Existencias de datos para la fecha de referencia (antes de ayer):
 existencias <- getwsDatosExisteEstacionesList(idsesion)
 existencias$FECINICIODATOS <- as.Date(existencias$FECINICIODATOS)
 existencias$FECFINDATOS <- as.Date(existencias$FECFINDATOS)
-sel_existencias <- existencias[!is.na(existencias$FECINICIODATOS) & existencias$FECINICIODATOS < date2 & existencias$FECFINDATOS > date2, ]
-head(sel_existencias)
+sel_existencias <- existencias[!is.na(existencias$CESTACION) & !is.na(existencias$FECINICIODATOS) & existencias$FECINICIODATOS < date2 & existencias$FECFINDATOS > date2, ]
+head(sel_existencias[,c('CESTACION','FECINICIODATOS','FECFINDATOS')])
 ```
 
 Estaciones (teniendo en cuenta existencias) y variables: 
@@ -114,7 +114,7 @@ Estaciones (teniendo en cuenta existencias) y variables:
 # Características básicas de las estaciones seleccionadas
 estaciones     <- getwsEstacionesList(idsesion)
 sel_estaciones <- estaciones[estaciones$CESTACION %in% sel_existencias$CESTACION, ]
-head(sel_estaciones)
+head(sel_estaciones[,c('CESTACION','DENOMINACION','LATITUD','LONGITUD')])
 
 # Características de las variables seleccionadas
 cvariables <- c("TI1", "PI1", "TD1", "TD2", "TD4","PD23")
@@ -123,7 +123,7 @@ for (cvariable in cvariables) {
   sel_variables <- getwsVariables(cvariable, idsesion)
   variables <- rbind(variables, sel_variables)
 }
-head(variables)
+head(variables[,c('CVARIABLE','DENOMINACION')])
 ```
 
 # 🧪 Ejemplo práctico de acceso a datos intradiarios de ayer
@@ -183,13 +183,13 @@ ggplot(datos_int, aes(x = datetime, y = valor, color = cvariable, group = cvaria
   )
 
 # Selección de datos de TD1
-datos_dia <- datos_diarios2[datos_diarios2$cvariable == 'TD1',]
+datos_dia <- datos_diarios2[datos_diarios2$cvariable == 'TD2',]
 # Histograma de frecuencias de datos de temperatura diaria
 ggplot(datos_dia, aes(x = valor)) +
   geom_histogram(binwidth = 1, fill = "#2b8cbe", color = "white", alpha = 0.8) +
   labs(
-    title = "Distribución de valores de TD1",
-    x = "Valor de TD1",
+    title = "Distribución de valores de TD2",
+    x = "Valor de TD2",
     y = "Frecuencia"
   ) +
   theme_minimal(base_size = 13) +
@@ -202,6 +202,5 @@ ggplot(datos_dia, aes(x = valor)) +
 
 # 🧑‍💻 Autoría y contacto
 
-Desarrollado por la **Agencia de Medio Ambiente y Agua de Andalucía**
-para la **REDIAM – Subsistema CLIMA**. Repositorio oficial:
+Desarrollado por **mcorzot**. Repositorio oficial:
 <https://github.com/mcorzot/climadiam>
