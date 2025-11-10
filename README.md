@@ -220,7 +220,5 @@ A continuación se muestra un ejemplo completo que ilustra cómo, a partir de un
 
 ## 📖 Autoría
 
-Desarrollado por la **Agencia de Medio Ambiente y Agua de Andalucía**  
-para el acceso a los servicios web de la **REDIAM – Subsistema CLIMA**.
-
+Desarrollado por **mcorzot** para el acceso a los servicios web de la **REDIAM – Subsistema CLIMA**.
 Repositorio oficial: [https://github.com/mcorzot/climadiam](https://github.com/mcorzot/climadiam)
