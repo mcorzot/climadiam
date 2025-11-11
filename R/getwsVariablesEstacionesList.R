@@ -34,7 +34,7 @@
 #' idsesion <- getwsIDSesion(user,password)
 #' cvariable <- 'TI1'
 #' variables_estaciones <- getwsVariablesEstacionesList(cvariable, idsesion)
-#' print(variables_estaciones)
+#' head(variables_estaciones)
 #'}
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame

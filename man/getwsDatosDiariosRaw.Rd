@@ -25,6 +25,7 @@ Junta de Andalucía para obtener un dato diario a partir de los identificadores
 internos de la estación, la variable y la fecha, y lo devuelve en un data.frame.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
@@ -32,6 +33,7 @@ pkest <- '183' # EARM22
 pkvar <- '2' # TD1
 pkfec <- '100741' # 26/10/2025
 result_diaria <- getwsDatosDiariosRaw(idsesion,pkest,pkvar,pkfec)
-print(result_diaria)
+head(result_diaria)
+}
 
 }

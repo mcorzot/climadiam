@@ -17,11 +17,13 @@
 #' }
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' estados_datos <- getwsEstadosDatosList(idsesion)
 #' head(estados_datos)
+#' }
 #'
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @importFrom RCurl getURL

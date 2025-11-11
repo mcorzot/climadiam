@@ -4,7 +4,7 @@
 \alias{call_with_retry}
 \title{Ejecutar una expresión con reintentos automáticos ante error}
 \usage{
-call_with_retry(expr, name, retries = 3, wait = 2)
+call_with_retry(expr, name, retries = 3, wait = 10)
 }
 \arguments{
 \item{expr}{Expresión o llamada a evaluar (por ejemplo, \code{soap_get(url)}).}
@@ -35,10 +35,9 @@ En caso de éxito, devuelve el resultado original sin modificar.
 }
 \examples{
 \dontrun{
-# Ejemplo de uso con una llamada potencialmente inestable:
 result <- call_with_retry({
   soap_get("http://servidor/prueba?param=x")
-}, name = "soap_get(prueba)", retries = 3, wait = 2)
+}, name = "soap_get(prueba)", retries = 3, wait = 10)
 }
 
 }

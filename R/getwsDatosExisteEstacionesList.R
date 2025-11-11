@@ -13,12 +13,14 @@
 #' Un \code{data.frame} con las columnas devueltas por el servicio (por ejemplo: \code{ESTPKEST}, \code{FECFINDATOS}, \code{FECHACARGA}, \code{FECINICIODATOS}, \code{LEXISTE}, \code{PKDEE}
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' cestacion <- 'EARM22'
 #' existencias_estaciones <- getwsDatosExisteEstacionesList(idsesion,cestacion)
 #' print(existencias_estaciones)
+#' }
 #'
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @importFrom RCurl getURL

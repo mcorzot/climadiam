@@ -10,10 +10,12 @@
 #' @return Character. ID de sesión válido para usar en llamadas SOAP posteriores.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' print(idsesion)
+#' }
 #'
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @export

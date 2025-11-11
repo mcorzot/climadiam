@@ -17,10 +17,12 @@ Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andal
 para obtener la lista de variables meteorológicas de la base de datos CLIMA.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 variables <- getwsVariablesList(idsesion)
 head(variables)
+}
 
 }

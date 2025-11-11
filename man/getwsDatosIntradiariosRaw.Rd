@@ -25,6 +25,7 @@ Andalucía para obtener datos intradiarios de una estación, variable y
 fecha a partir de sus identificadores internos, y devuelve un data.frame.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
@@ -33,5 +34,6 @@ pkvar <- '1' # TI1
 pkfec <- '100741' # 26/10/2025
 datos_intra <- getwsDatosIntradiariosRaw(idsesion,pkest,pkvar,pkfec)
 head(datos_intra)
+}
 
 }

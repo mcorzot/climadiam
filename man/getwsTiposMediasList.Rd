@@ -24,10 +24,12 @@ Esta función consulta el servicio web CLIMA de la Junta de Andalucía y devuelv
 \code{data.frame} con los tipos de medias disponibles (por ejemplo: diaria, horaria, mensual).
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 tipos_medias <- getwsTiposMediasList(idsesion)
 head(tipos_medias)
+}
 
 }

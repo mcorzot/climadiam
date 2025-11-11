@@ -13,6 +13,7 @@
 #' @return data.frame con columnas: pkest, pkvar, pkfec, valor.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
@@ -20,7 +21,8 @@
 #' pkvar <- '2' # TD1
 #' pkfec <- '100741' # 26/10/2025
 #' result_diaria <- getwsDatosDiariosRaw(idsesion,pkest,pkvar,pkfec)
-#' print(result_diaria)
+#' head(result_diaria)
+#' }
 #'
 #' @importFrom RCurl postForm
 #' @importFrom XML xmlParse getNodeSet xmlChildren xmlValue xmlSize

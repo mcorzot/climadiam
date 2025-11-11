@@ -9,10 +9,13 @@
 #' @return data.frame con columnas: \code{CESCALA}, \code{DENOMINACION}, \code{PKESC}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' escalas <- getwsEscalasList(idsesion)
+#' head(escalas)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

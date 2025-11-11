@@ -24,10 +24,12 @@ Esta función consulta el servicio web CLIMA de la Junta de Andalucía y devuelv
 \code{data.frame} con los estados de los datos.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 estados_datos <- getwsEstadosDatosList(idsesion)
 head(estados_datos)
+}
 
 }

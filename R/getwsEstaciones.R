@@ -10,12 +10,14 @@
 #' @return data.frame con columnas: \code{ACLPKACL}, \code{AGEPKAGE}, \code{CESTACION}, \code{COMPKCOM}, etcétera.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' cestacion <- 'EARM22'
 #' estacion <- getwsEstaciones(cestacion,idsesion)
 #' head(estacion)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

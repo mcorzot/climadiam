@@ -34,6 +34,7 @@ garantiza que la respuesta del servicio contiene todos los nodos y deja como
 NA los datos ausentes.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
@@ -43,5 +44,6 @@ pkfec_ini <- '100730' # 15/10/2025
 pkfec_fin <- '100741' # 26/10/2025
 result_diarios <- getwsDatosDiarios2Raw(idsesion,pkests,pkvars,pkfec_ini,pkfec_fin)
 head(result_diarios)
+}
 
 }

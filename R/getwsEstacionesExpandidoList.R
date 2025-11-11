@@ -13,11 +13,13 @@
 #' coordenadas, red, municipio, provincia, entorno y otros metadatos.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' estaciones_detallado <- getwsEstacionesExpandidoList(idsesion)
 #' head(estaciones_detallado)
+#' }
 #'
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @importFrom RCurl getURL

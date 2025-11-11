@@ -13,6 +13,7 @@
 #' @return data.frame con columnas: pkest, pkvar, pkfec, valor.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
@@ -21,6 +22,7 @@
 #' pkfecs <- c('98981') # 31/12/2020
 #' datos_mensuales <- getwsDatosMensualesRaw(idsesion,pkests,pkvars,pkfecs)
 #' head(datos_mensuales)
+#' }
 #'
 #' @importFrom RCurl postForm
 #' @importFrom XML xmlParse getNodeSet xmlChildren xmlValue xmlSize

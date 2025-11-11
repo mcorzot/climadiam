@@ -9,11 +9,13 @@
 #' @return data.frame con columnas: \code{CRED}, \code{DENOMINACION}, \code{OBSERVACION}, \code{PKRED}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' redes <- getwsRedesList(idsesion)
 #' head(redes)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

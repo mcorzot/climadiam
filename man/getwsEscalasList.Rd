@@ -17,9 +17,12 @@ Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andal
 para obtener la lista de las escalas temporales en la base de datos CLIMA.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 escalas <- getwsEscalasList(idsesion)
+head(escalas)
+}
 
 }

@@ -42,7 +42,7 @@ password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 cvariable <- 'TI1'
 variables_estaciones <- getwsVariablesEstacionesList(cvariable, idsesion)
-print(variables_estaciones)
+head(variables_estaciones)
 }
 
 }

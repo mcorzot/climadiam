@@ -31,7 +31,6 @@ En caso de error de conexión o tiempo de espera, se lanza una excepción.
 }
 \examples{
 \dontrun{
-# Ejemplo de uso:
 xml_text <- soap_get("http://www.juntade.../ServicioClima?method=getRedesList&pksesion=12345")
 cat(substr(xml_text, 1, 200))  # Muestra las primeras líneas del XML
 }

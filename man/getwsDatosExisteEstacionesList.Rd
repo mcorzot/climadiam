@@ -21,11 +21,13 @@ existentes según los parámetros de búsqueda. Si se introduce el código de la
 estación, devuelve sólo el registro solicitado.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 cestacion <- 'EARM22'
 existencias_estaciones <- getwsDatosExisteEstacionesList(idsesion,cestacion)
 print(existencias_estaciones)
+}
 
 }

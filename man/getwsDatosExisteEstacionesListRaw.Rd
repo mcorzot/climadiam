@@ -21,11 +21,13 @@ existentes según los parámetros de búsqueda. Si se introduce el identificador
 interno de una estación, devuelve sólo el registro solicitado
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 pkest <- '183' # EARM22
 existencias_estaciones <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
-print(existencias_estaciones)
+head(existencias_estaciones)
+}
 
 }

@@ -25,6 +25,7 @@ Andalucía para obtener datos diarios de varias estaciones, variables y fechas,
 a partir de sus identificadores internos, devolviendo un data.frame
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
@@ -32,6 +33,7 @@ pkests <- c('183') # EARM22
 pkvars <- c('2','711') # TD1 y PD23
 pkfecs <- c('100741','100742') # 26/10/2025 y 27/10/2025
 result_diaria <- getwsDatosDiariosMultiRaw(idsesion,pkests,pkvars,pkfecs)
-print(result_diaria)
+head(result_diaria)
+}
 
 }

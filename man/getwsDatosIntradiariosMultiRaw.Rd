@@ -26,6 +26,7 @@ fecha a partir de sus identificadores internos, y devuelve un data.frame.
 Permite combinar varias variables y fechas para una estación única.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
@@ -34,5 +35,6 @@ pkvars <- c('1','63') # TI1 y PI1
 pkfecs <- c('100741','100742') # 26/10/2025 y 27/10/2025
 datos_intra_raw <- getwsDatosIntradiariosMultiRaw(idsesion,pkests,pkvars,pkfecs)
 head(datos_intra_raw)
+}
 
 }

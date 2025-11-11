@@ -10,12 +10,14 @@
 #' @return data.frame con columnas: \code{CVARIABLE}, \code{DENOMINACION}, \code{FRECUENCIA}, \code{PKVAR},  \code{UDMPKUDM}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' cvariable <- 'TI1'
 #' variable <- getwsVariables(cvariable,idsesion)
 #' head(variable)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

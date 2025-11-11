@@ -9,10 +9,13 @@
 #' @return data.frame con columnas: \code{CMAGNITUDES}, \code{DENOMINACION}, \code{PKMAG}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' magnitudes <- getwsMagnitudesList(idsesion)
+#' head(magnitudes)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

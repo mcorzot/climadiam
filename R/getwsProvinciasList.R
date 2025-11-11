@@ -9,10 +9,13 @@
 #' @return data.frame con columnas: \code{PROVINCIA}, \code{NOMBRE}, \code{PREFIJO_TEFN}, \code{COMUNIDAD}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' provincias <- getwsProvinciasList(idsesion)
+#' head(provincias)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

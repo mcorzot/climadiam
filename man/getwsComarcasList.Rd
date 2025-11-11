@@ -17,9 +17,11 @@ Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andal
 para obtener la lista de las comarcas en la base de datos CLIMA.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 comarcas <- getwsComarcasList(idsesion)
+}
 
 }

@@ -14,6 +14,7 @@
 #' @return data.frame con columnas: id de estación, id de variable, id de fecha y valor.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
@@ -22,6 +23,7 @@
 #' pkfec <- '100741' # 26/10/2025
 #' datos_intra <- getwsDatosIntradiariosRaw(idsesion,pkest,pkvar,pkfec)
 #' head(datos_intra)
+#' }
 #'
 #' @importFrom RCurl postForm
 #' @importFrom XML xmlParse getNodeSet xmlChildren xmlValue

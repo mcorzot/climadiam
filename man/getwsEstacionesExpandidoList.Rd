@@ -20,10 +20,12 @@ y devuelve un \code{data.frame} con información detallada de todas las
 estaciones meteorológicas disponibles en la base de datos.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 estaciones_detallado <- getwsEstacionesExpandidoList(idsesion)
 head(estaciones_detallado)
+}
 
 }

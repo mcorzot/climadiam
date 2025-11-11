@@ -25,6 +25,7 @@ Junta de Andalucía para obtener datos mensuales de varias estaciones, variables
 y fechas, a partir de sus identificadores internos, y devolverlos como data.frame.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
@@ -33,5 +34,6 @@ pkvars <- c('22') # TM1
 pkfecs <- c('98981') # 31/12/2020
 datos_mensuales <- getwsDatosMensualesRaw(idsesion,pkests,pkvars,pkfecs)
 head(datos_mensuales)
+}
 
 }

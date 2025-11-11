@@ -10,12 +10,14 @@
 #' @return data.frame con columnas: \code{PKFEC}, \code{FECHA}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' date <- "20/10/2025"
 #' fecha <- getwsFechas(date,idsesion)
-#' print(fecha)
+#' head(fecha)
+#' }
 #'
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @importFrom RCurl getURL

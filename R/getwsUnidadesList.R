@@ -9,10 +9,13 @@
 #' @return data.frame con columnas: \code{ABREVIATURA}, \code{DENOMINACION}, \code{PKUDM}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' unidades <- getwsUnidadesList(idsesion)
+#' head(unidades)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

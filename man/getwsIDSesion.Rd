@@ -19,9 +19,11 @@ Esta función solicita un identificador de sesión (ID de sesión)
 al servicio de clima de la Junta de Andalucía, autenticando con usuario y contraseña.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 print(idsesion)
+}
 
 }

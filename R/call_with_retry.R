@@ -24,16 +24,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Ejemplo de uso con una llamada potencialmente inestable:
 #' result <- call_with_retry({
 #'   soap_get("http://servidor/prueba?param=x")
-#' }, name = "soap_get(prueba)", retries = 3, wait = 2)
+#' }, name = "soap_get(prueba)", retries = 3, wait = 10)
 #' }
 #'
 #' @export
 #' @keywords internal
 #'
-call_with_retry <- function(expr, name, retries = 3, wait = 2) {
+call_with_retry <- function(expr, name, retries = 3, wait = 10) {
   attempt <- 1
   while (attempt <= retries) {
     result <- try(expr, silent = TRUE)

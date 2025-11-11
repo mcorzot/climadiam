@@ -15,6 +15,7 @@
 #' @return data.frame con columnas: pkest, pkvar, pkfec, minuto, valor.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
@@ -23,6 +24,7 @@
 #' pkfecs <- c('100741','100742') # 26/10/2025 y 27/10/2025
 #' datos_intra_raw <- getwsDatosIntradiariosMultiRaw(idsesion,pkests,pkvars,pkfecs)
 #' head(datos_intra_raw)
+#' }
 #'
 #' @importFrom RCurl postForm
 #' @importFrom XML xmlParse getNodeSet xmlChildren xmlValue

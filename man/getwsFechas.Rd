@@ -19,11 +19,13 @@ Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andal
 para obtener el identificador de una fecha de la base de datos CLIMA.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 date <- "20/10/2025"
 fecha <- getwsFechas(date,idsesion)
-print(fecha)
+head(fecha)
+}
 
 }

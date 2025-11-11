@@ -9,10 +9,12 @@
 #' @return data.frame con columnas: \code{CODIGO}, \code{DENOMINACION}, \code{PKAGE}.
 #'
 #' @examples
+#' \dontrun{
 #' user <- 'usuario'
 #' password <- 'usuario'
 #' idsesion <- getwsIDSesion(user,password)
 #' areas_geograficas <- getwsAreasGeograficasList(idsesion)
+#' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom plyr ldply

@@ -19,11 +19,13 @@ Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andal
 para obtener los datos de una estación meteorológica de la base de datos CLIMA.
 }
 \examples{
+\dontrun{
 user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 cestacion <- 'EARM22'
 estacion <- getwsEstaciones(cestacion,idsesion)
 head(estacion)
+}
 
 }
