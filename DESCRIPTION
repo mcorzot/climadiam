@@ -2,8 +2,8 @@ Package: climadiam
 Type: Package
 Title: Funciones de consulta de datos del Subsistema CLIMA
 Version: 0.1.0
-Author: mcorzot
-Maintainer: mcorzot <mcorzot@outlook.es>
+Author: Mariano Corzo Toscano
+Maintainer: Mariano Corzo Toscano <mcorzot@outlook.es>
 Description: Funciones de consulta de datos del Subsistema CLIMA.
 License: MIT + file LICENSE
 Encoding: UTF-8
