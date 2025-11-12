@@ -36,6 +36,7 @@ getwsDatosExisteEstacionesList <- function(idsesion,cestacion = NULL) {
     estacion_df <- getwsEstacionesList(idsesion)
     df <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
     df <- merge(x = df, y = estacion_df, by.x = 'ESTPKEST', by.y = 'PKEST', all.x = TRUE)
+    df <- df[!is.na(df$CESTACION), ]
     df <- df[,c("ESTPKEST","FECFINDATOS","FECHACARGA","FECINICIODATOS","LEXISTE","PKDEE","CESTACION")]
 
   } else {
