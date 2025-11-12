@@ -34,5 +34,13 @@ getwsFechas <- function(date, idsesion) {
   pkfec <- xmlToDataFrame(nodes = XML::getNodeSet(doc, "//PKFEC"), stringsAsFactors = FALSE)
   fecha <- xmlToDataFrame(nodes = XML::getNodeSet(doc, "//FECHA"), stringsAsFactors = FALSE)
   df <- data.frame(PKFEC = unlist(pkfec), FECHA = unlist(fecha), stringsAsFactors = FALSE)
+
+  # Aviso en caso de que no se encuentre la date
+  if(nrow(df) == 0){
+    message(paste0("No se ha encontrado la fecha ",date))
+  } else {
+    message(paste0("Obtenido dataframe de fechas con ",nrow(df)," registros."))
+  }
+
   return(df)
 }

@@ -49,6 +49,8 @@ getwsRedesList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de redes de estaciones meteorol\u00F3gicas con ",nrow(df)," registros."))
+
   return(df)
 }
 

@@ -69,7 +69,7 @@ getwsDatosDiariosRaw <- function(idsesion,pkest,pkvar,pkfec) {
       .opts = list(
         postfields = soapBody,
         httpheader = httpHeader,
-        verbose = TRUE,
+        verbose = FALSE,
         followlocation = TRUE
       )
     ),
@@ -120,6 +120,14 @@ getwsDatosDiariosRaw <- function(idsesion,pkest,pkvar,pkfec) {
 
   # Combinar resultados
   df <- do.call(rbind, result_list)
+
+  # Aviso en caso de que no se encuentren resultados
+  if(nrow(df) == 0){
+    message("No se han encontrado datos diarios")
+  } else {
+    message(paste0("Obtenido dataframe de datos diarios con ",nrow(df)," registros."))
+  }
+
   return(df)
 }
 

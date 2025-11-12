@@ -47,6 +47,8 @@ getwsAreasGeograficasList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de \u00E1reas geogr\u00E1ficas con ",nrow(df)," registros."))
+
   return(df)
 }
 

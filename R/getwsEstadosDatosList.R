@@ -65,5 +65,7 @@ getwsEstadosDatosList <- function(idsesion) {
   # --- Limpieza final ---
   df <- df[rowSums(is.na(df)) < ncol(df), , drop = FALSE]
 
+  message(paste0("Obtenido dataframe de estados de los datos con ",nrow(df)," registros."))
+
   return(df)
 }

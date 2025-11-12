@@ -73,30 +73,45 @@ getwsDatosIntradiariosMulti <- function(idsesion,cestaciones,cvariables,fechas) 
     datos_df <- rbind(datos_df,df)
   }
 
-  # Se relaciona con las horas-minutos
-  datos_df <- merge(x = datos_df, y = minutos_horas, by.x='minuto', by.y='MINUTOS')
+  # En caso de que la consulta no obtenga registros se genera dataframe vacio
+  if (nrow(datos_df)==0){
+    df <- data.frame(
+      cestacion = character(),
+      cvariable = character(),
+      fecha = character(),
+      hora = character(),
+      valor = numeric(),
+      stringsAsFactors = FALSE
+      )
+    } else {
 
-  # Se convierte el dato de las 24:00 en el de las 00:00 del dia siguiente
-  datos_df$HORA[datos_df$HORA=="24:00"] <- "00:00"
-  datos_df$pkfec <- ifelse(datos_df$HORA %in% "00:00", as.character(as.integer(datos_df$pkfec)+1), datos_df$pkfec)
+    # Se relaciona con las horas-minutos
+    datos_df <- merge(x = datos_df, y = minutos_horas, by.x='minuto', by.y='MINUTOS')
 
-  # Se filtra teniendo en cuenta la fecha indicada en la consulta
-  datos_df <- datos_df[datos_df$pkfec %in% pkfecs,]
+    # Se convierte el dato de las 24:00 en el de las 00:00 del dia siguiente
+    datos_df$HORA[datos_df$HORA=="24:00"] <- "00:00"
+    datos_df$pkfec <- ifelse(datos_df$HORA %in% "00:00", as.character(as.integer(datos_df$pkfec)+1), datos_df$pkfec)
 
-  # Se borran duplicados
-  datos_df <- datos_df[!duplicated(datos_df), ]
+    # Se filtra teniendo en cuenta la fecha indicada en la consulta
+    datos_df <- datos_df[datos_df$pkfec %in% pkfecs,]
 
-  # Se ordena el dataframe por hora
-  datos_df <- datos_df[order(datos_df$pkest,datos_df$pkvar,datos_df$pkfec,datos_df$HORA),]
+    # Se borran duplicados
+    datos_df <- datos_df[!duplicated(datos_df), ]
 
-  # Se asocian los identificadores internos con los valores aportados en la funcion
-  datos_df <- merge(x = datos_df, y = estaciones_df, by.x = 'pkest', by.y = 'PKEST')
-  datos_df <- merge(x = datos_df, y = variables_df, by.x = 'pkvar', by.y = 'PKVAR')
-  datos_df <- merge(x = datos_df, y = fechas_df, by.x = 'pkfec', by.y = 'PKFEC')
+    # Se ordena el dataframe por hora
+    datos_df <- datos_df[order(datos_df$pkest,datos_df$pkvar,datos_df$pkfec,datos_df$HORA),]
 
-  # Se compone el dataframe
-  df <- data.frame(datos_df$CESTACION,datos_df$CVARIABLE,datos_df$FECHA,datos_df$HORA,datos_df$valor)
-  colnames(df) <- c('cestacion','cvariable','fecha','hora','valor')
+    # Se asocian los identificadores internos con los valores aportados en la funcion
+    datos_df <- merge(x = datos_df, y = estaciones_df, by.x = 'pkest', by.y = 'PKEST')
+    datos_df <- merge(x = datos_df, y = variables_df, by.x = 'pkvar', by.y = 'PKVAR')
+    datos_df <- merge(x = datos_df, y = fechas_df, by.x = 'pkfec', by.y = 'PKFEC')
+
+    # Se compone el dataframe
+    df <- data.frame(datos_df$CESTACION,datos_df$CVARIABLE,datos_df$FECHA,datos_df$HORA,datos_df$valor)
+    colnames(df) <- c('cestacion','cvariable','fecha','hora','valor')
+    }
+
+  message(paste0("Obtenido dataframe de datos intradiarios con ",nrow(df)," registros."))
 
   return(df)
 

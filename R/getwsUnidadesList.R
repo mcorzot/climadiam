@@ -47,6 +47,8 @@ getwsUnidadesList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de unidades de medida con ",nrow(df)," registros."))
+
   return(df)
 }
 

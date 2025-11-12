@@ -32,7 +32,7 @@ getwsVariablesList <- function(idsesion) {
   doc <- xmlParse(xml_text)
   extract_nodes <- function(tag) xmlToDataFrame(nodes = XML::getNodeSet(doc, paste0("//", tag)), stringsAsFactors = FALSE)
 
-  data.frame(
+  df <- data.frame(
     CVARIABLE = unlist(extract_nodes("CVARIABLE")),
     DENOMINACION = unlist(extract_nodes("DENOMINACION")),
     FRECUENCIA = unlist(extract_nodes("FRECUENCIA")),
@@ -40,4 +40,8 @@ getwsVariablesList <- function(idsesion) {
     UDMPKUDM = unlist(extract_nodes("UDMPKUDM")),
     stringsAsFactors = FALSE
   )
+
+  message(paste0("Obtenido dataframe de variables con ",nrow(df)," registros."))
+
+  return(df)
 }

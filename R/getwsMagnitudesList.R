@@ -47,6 +47,8 @@ getwsMagnitudesList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de magnitudes clim\u00E1ticas con ",nrow(df)," registros."))
+
   return(df)
 }
 

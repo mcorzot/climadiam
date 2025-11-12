@@ -66,5 +66,7 @@ getwsVariablesEstacionesListRaw <- function(varpkvar, idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de estaciones por variable con ",nrow(df)," registros."))
+
   return(df)
 }

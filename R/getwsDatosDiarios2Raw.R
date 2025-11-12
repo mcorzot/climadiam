@@ -76,23 +76,13 @@ getwsDatosDiarios2Raw <- function(idsesion,pkests,pkvars,pkfec_ini,pkfec_fin) {
   )
 
   # Llamada SOAP
-  response <- postForm(
-    uri = url,
-    .opts = list(
-      postfields = soapBody,
-      httpheader = httpHeader,
-      verbose = FALSE,
-      followlocation = TRUE
-    )
-  )
-
   response <- call_with_retry(
     expr = RCurl::postForm(
       uri = url,
       .opts = list(
         postfields = soapBody,
         httpheader = httpHeader,
-        verbose = TRUE,
+        verbose = FALSE,
         followlocation = TRUE
       )
     ),
@@ -140,9 +130,15 @@ getwsDatosDiarios2Raw <- function(idsesion,pkests,pkvars,pkfec_ini,pkfec_fin) {
   }
 
   df <- do.call(rbind, result_list)
-  if(nrow(df)< (length(pkfec_seq))){
-    message('Hay menos datos diarios de los esperados. La asignaci\u00F3n de fechas a los mismos no es correcta')
-    }
+
+  # Aviso en caso de que no se encuentren resultados
+  if(nrow(df) == 0){
+    message("No se han encontrado datos diarios en bruto")
+    } else if (nrow(df) < (length(pkfec_seq))){
+      message('Hay menos datos diarios de los esperados. La asignaci\u00F3n de fechas a los mismos no es correcta')
+    } else {
+      message(paste0("Obtenido dataframe de datos diarios en bruto con ",nrow(df)," registros."))
+      }
   return(df)
 }
 

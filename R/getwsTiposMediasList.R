@@ -66,5 +66,7 @@ getwsTiposMediasList <- function(idsesion) {
   # --- Limpieza final ---
   df <- df[rowSums(is.na(df)) < ncol(df), , drop = FALSE]
 
+  message(paste0("Obtenido dataframe de tipos de media con ",nrow(df)," registros."))
+
   return(df)
 }

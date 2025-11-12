@@ -82,5 +82,7 @@ getwsVariablesEstacionesList <- function(cvariable, idsesion) {
   df <- df[,c('ESTPKEST','CESTACION','EXISTENDATOS','FACTOR','LIMITEVAL',
               'ORIGEN','PKVPE','RANGOINFERIOR','RANGOSUPERIOR','VARPKVAR','CVARIABLE')]
 
+  message(paste0("Obtenido dataframe de estaciones por variable con ",nrow(df)," registros."))
+
   return(df)
 }

@@ -73,5 +73,12 @@ getwsDatosExisteEstacionesListRaw <- function(idsesion,pkest = NULL) {
   # --- Limpieza final ---
   df <- df[rowSums(is.na(df)) < ncol(df), , drop = FALSE]
 
+  # Aviso en caso de que no se encuentren resultados
+  if(nrow(df) == 0){
+    message("No se han encontrado estaciones que cumplan los criterios")
+  } else {
+    message(paste0("Obtenido dataframe de existencias de datos por estaciones en bruto con ",nrow(df)," registros."))
+  }
+
   return(df)
 }

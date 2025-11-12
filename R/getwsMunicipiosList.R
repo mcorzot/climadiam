@@ -47,6 +47,8 @@ getwsMunicipiosList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de municipios con ",nrow(df)," registros."))
+
   return(df)
 }
 

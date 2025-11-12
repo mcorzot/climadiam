@@ -28,7 +28,7 @@ getwsEstaciones <- function(cestacion,idsesion) {
 
   url <- paste0(
     "http://www.juntadeandalucia.es/medioambiente/servtc5/climaws/services/ServicioClima",
-    "?method=getEstaciones&pksesion=", idsesion,"&CESTACION=", cestacion
+    "?method=getEstaciones&CESTACION=",cestacion,"&pksesion=", idsesion
   )
 
   xml_text <- call_with_retry(soap_get(url),"soap_get(getEstaciones)")
@@ -58,5 +58,13 @@ getwsEstaciones <- function(cestacion,idsesion) {
     REDPKRED = unlist(extract_nodes("REDPKRED")),
     stringsAsFactors = FALSE
   )
+
+  # Aviso en caso de que no se encuentre el cestacion
+  if(nrow(df) == 0){
+    message(paste0("No se ha encontrado la estaci\u00F3n ",cestacion))
+  } else {
+    message(paste0("Obtenido dataframe de estaciones con ",nrow(df)," registros."))
+  }
+
   return(df)
 }

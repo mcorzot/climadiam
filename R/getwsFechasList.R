@@ -45,6 +45,8 @@ getwsFechasList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de fechas con ",nrow(df)," registros."))
+
   return(df)
 }
 

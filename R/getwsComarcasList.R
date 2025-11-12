@@ -48,6 +48,8 @@ getwsComarcasList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de comarcas con ",nrow(df)," registros."))
+
   return(df)
 }
 

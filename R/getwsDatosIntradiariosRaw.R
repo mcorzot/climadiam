@@ -70,7 +70,7 @@ getwsDatosIntradiariosRaw <- function(idsesion,pkest,pkvar,pkfec) {
       .opts = list(
         postfields = soapBody,
         httpheader = httpHeader,
-        verbose = TRUE,
+        verbose = FALSE,
         followlocation = TRUE
       )
     ),
@@ -109,5 +109,13 @@ getwsDatosIntradiariosRaw <- function(idsesion,pkest,pkvar,pkfec) {
 
   # Combinar en un unico data.frame
   df <- do.call(rbind, result_list)
+
+  # Aviso en caso de que no se encuentren resultados
+  if(nrow(df) == 0){
+    message("No se han encontrado datos intradiarios en bruto")
+  } else {
+    message(paste0("Obtenido dataframe de datos intradiarios en bruto con ",nrow(df)," registros."))
+  }
+
   return(df)
 }

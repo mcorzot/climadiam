@@ -48,22 +48,37 @@ getwsDatosIntradiarios <- function(idsesion,cestacion,cvariable,fecha) {
   df <- getwsDatosIntradiariosRaw(idsesion,pkest,pkvar,pkfec)
   df <- rbind(df_prev,df)
 
-  # Se relaciona con las horas-minutos
-  df <- merge(x = df, y = minutos_horas, by.x='minuto', by.y='MINUTOS')
+  # En caso de que la consulta no obtenga registros se genera dataframe vacio
+  if (nrow(df) == 0){
+    df <- data.frame(
+      cestacion = character(),
+      cvariable = character(),
+      fecha = character(),
+      hora = character(),
+      valor = numeric(),
+      stringsAsFactors = FALSE
+    )
+  } else {
 
-  # Se convierte el dato de las 24:00 en el de las 00:00 del dia siguiente
-  df$HORA[df$HORA=="24:00"] <- "00:00"
-  df$pkfec <- ifelse(df$HORA %in% "00:00", as.character(as.integer(df$pkfec)+1), df$pkfec)
+    # Se relaciona con las horas-minutos
+    df <- merge(x = df, y = minutos_horas, by.x='minuto', by.y='MINUTOS')
 
-  # Se filtra teniendo en cuenta la fecha indicada en la consulta
-  df <- df[df$pkfec == pkfec,]
+    # Se convierte el dato de las 24:00 en el de las 00:00 del dia siguiente
+    df$HORA[df$HORA=="24:00"] <- "00:00"
+    df$pkfec <- ifelse(df$HORA %in% "00:00", as.character(as.integer(df$pkfec)+1), df$pkfec)
 
-  # Se ordena el dataframe por hora
-  df <- df[order(df$HORA),]
+    # Se filtra teniendo en cuenta la fecha indicada en la consulta
+    df <- df[df$pkfec == pkfec,]
 
-  # Se compone el dataframe
-  df <- data.frame(cestacion,cvariable,fecha,df$HORA,df$valor)
-  colnames(df) <- c('cestacion','cvariable','fecha','hora','valor')
+    # Se ordena el dataframe por hora
+    df <- df[order(df$HORA),]
+
+    # Se compone el dataframe
+    df <- data.frame(cestacion,cvariable,fecha,df$HORA,df$valor)
+    colnames(df) <- c('cestacion','cvariable','fecha','hora','valor')
+  }
+
+  message(paste0("Obtenido dataframe de datos intradiarios con ",nrow(df)," registros."))
 
   return(df)
 }

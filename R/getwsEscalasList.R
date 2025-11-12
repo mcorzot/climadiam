@@ -47,6 +47,8 @@ getwsEscalasList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de escalas temporales con ",nrow(df)," registros."))
+
   return(df)
 }
 

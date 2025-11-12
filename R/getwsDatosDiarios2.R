@@ -77,14 +77,27 @@ getwsDatosDiarios2 <- function(idsesion,cestaciones,cvariables,fecha_ini,fecha_f
   # Se consultan los datos brutos con los parametros obtenidos
   datos_df <- getwsDatosDiarios2Raw(idsesion,pkests,pkvars,pkfec_ini,pkfec_fin)
 
-  # Se asocian los identificadores internos con los valores aportados en la funcion
-  datos_df <- merge(x = datos_df, y = estaciones_df, by.x = 'pkest', by.y = 'PKEST')
-  datos_df <- merge(x = datos_df, y = variables_df, by.x = 'pkvar', by.y = 'PKVAR')
-  datos_df <- merge(x = datos_df, y = fechas_df, by.x = 'pkfec', by.y = 'PKFEC')
+  # En caso de que la consulta no obtenga registros se genera dataframe vacio
+  if (nrow(datos_df)==0){
+    df <- data.frame(
+      cestacion = character(),
+      cvariable = character(),
+      fecha = character(),
+      valor = numeric(),
+      stringsAsFactors = FALSE
+    )
+  } else {
+    # Se asocian los identificadores internos con los valores aportados en la funcion
+    datos_df <- merge(x = datos_df, y = estaciones_df, by.x = 'pkest', by.y = 'PKEST')
+    datos_df <- merge(x = datos_df, y = variables_df, by.x = 'pkvar', by.y = 'PKVAR')
+    datos_df <- merge(x = datos_df, y = fechas_df, by.x = 'pkfec', by.y = 'PKFEC')
 
-  # Se compone el dataframe
-  df <- data.frame(datos_df$CESTACION,datos_df$CVARIABLE,datos_df$FECHA,datos_df$valor)
-  colnames(df) <- c('cestacion','cvariable','fecha','valor')
+    # Se compone el dataframe
+    df <- data.frame(datos_df$CESTACION,datos_df$CVARIABLE,datos_df$FECHA,datos_df$valor)
+    colnames(df) <- c('cestacion','cvariable','fecha','valor')
+  }
+
+  message(paste0("Obtenido dataframe de datos diarios con ",nrow(df)," registros."))
 
   return(df)
 }

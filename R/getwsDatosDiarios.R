@@ -45,9 +45,22 @@ getwsDatosDiarios <- function(idsesion,cestacion,cvariable,fecha) {
   # Se obtienen los datos en raw
   df <- getwsDatosDiariosRaw(idsesion, pkest, pkvar, pkfec)
 
-  # Se compone el dataframe
-  df <- data.frame(cestacion,cvariable,fecha,df$valor)
-  colnames(df) <- c('cestacion','cvariable','fecha','valor')
+  # En caso de que la consulta no obtenga registros se genera dataframe vacio
+  if (nrow(df)==0){
+    df <- data.frame(
+      cestacion = character(),
+      cvariable = character(),
+      fecha = character(),
+      valor = numeric(),
+      stringsAsFactors = FALSE
+    )
+  } else {
+    # Se compone el dataframe
+    df <- data.frame(cestacion,cvariable,fecha,df$valor)
+    colnames(df) <- c('cestacion','cvariable','fecha','valor')
+  }
+
+  message(paste0("Obtenido dataframe de datos diarios con ",nrow(df)," registros."))
 
   return(df)
 }

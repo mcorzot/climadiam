@@ -69,7 +69,7 @@ getwsDatosAnualesRaw <- function(idsesion,pkests,pkvars,pkfecs) {
       .opts = list(
         postfields = soapBody,
         httpheader = httpHeader,
-        verbose = TRUE,
+        verbose = FALSE,
         followlocation = TRUE
       )
     ),
@@ -120,6 +120,14 @@ getwsDatosAnualesRaw <- function(idsesion,pkests,pkvars,pkfecs) {
 
   # Combinar todos los resultados
   df <- do.call(rbind, result_list)
+
+  # Aviso en caso de que no se encuentren resultados
+  if(nrow(df) == 0){
+    message("No se han encontrado datos anuales en bruto")
+  } else {
+    message(paste0("Obtenido dataframe de datos anuales en bruto con ",nrow(df)," registros."))
+  }
+
   return(df)
 }
 

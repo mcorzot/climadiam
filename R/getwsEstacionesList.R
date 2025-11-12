@@ -63,5 +63,8 @@ getwsEstacionesList <- function(idsesion) {
     WEB = unlist(extract_nodes("WEB")),
     stringsAsFactors = FALSE
   )
+
+  message(paste0("Obtenido dataframe de estaciones con ",nrow(df)," registros."))
+
   return(df)
 }

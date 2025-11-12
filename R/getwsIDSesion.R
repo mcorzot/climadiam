@@ -29,6 +29,9 @@ getwsIDSesion <- function(user, password) {
   xml_text <- call_with_retry(soap_get(url),"soap_get(getIDSesion)")
   doc <- xmlParse(xml_text)
   idsesion <- xmlToDataFrame(nodes = XML::getNodeSet(doc, "//getIDSesionReturn"), stringsAsFactors = FALSE)
+
+  message("Obtenido identificador de sesi\u00F3n")
+
   return(idsesion[1, 1])
 
 }

@@ -46,6 +46,9 @@ getwsDatosExisteEstacionesList <- function(idsesion,cestacion = NULL) {
     # Se obtiene el pk de cestacion
     df <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
     df$CESTACION <- cestacion
-    }
+  }
+
+  message(paste0("Obtenido dataframe de existencias de datos por estaci\u00F3n con ",nrow(df)," registros."))
+
   return(df)
 }

@@ -97,5 +97,7 @@ getwsEstacionesExpandidoList <- function(idsesion) {
   # --- Limpieza: eliminar filas completamente vacias ---
   df <- df[rowSums(is.na(df)) < ncol(df), , drop = FALSE]
 
+  message(paste0("Obtenido dataframe de estaciones (detalle) con ",nrow(df)," registros."))
+
   return(df)
 }

@@ -49,6 +49,8 @@ getwsProvinciasList <- function(idsesion) {
     stringsAsFactors = FALSE
   )
 
+  message(paste0("Obtenido dataframe de provincias con ",nrow(df)," registros."))
+
   return(df)
 }
 
