@@ -2,29 +2,45 @@
 % Please edit documentation in R/getwsVariables.R
 \name{getwsVariables}
 \alias{getwsVariables}
-\title{Obtener una variable de la lista de variables  meteorológicas de la base de datos del CLIMA}
+\title{Obtener una variable meteorológica de la base de datos CLIMA con reintentos}
 \usage{
-getwsVariables(cvariable, idsesion)
+getwsVariables(cvariable, idsesion, retries = 3, wait = 2, timeout_sec = 5)
 }
 \arguments{
-\item{cvariable}{Character. Identificador de la variable.}
+\item{cvariable}{Character. Identificador de la variable a consultar.}
 
-\item{idsesion}{Character. Identificador de sesión válido proporcionado por \code{getwsIDSesion}.}
+\item{idsesion}{Character. Identificador de sesión válido para el servicio SOAP.}
+
+\item{retries}{Integer. Número máximo de intentos (por defecto 3).}
+
+\item{wait}{Numeric. Tiempo de espera entre reintentos en segundos (por defecto 2).}
+
+\item{timeout_sec}{Numeric. Tiempo máximo de espera por la respuesta del servicio SOAP en segundos (por defecto 5).}
 }
 \value{
-data.frame con columnas: \code{CVARIABLE}, \code{DENOMINACION}, \code{FRECUENCIA}, \code{PKVAR},  \code{UDMPKUDM}.
+Devuelve un `data.frame` con los siguientes campos:
+\itemize{
+  \item CVARIABLE
+  \item DENOMINACION
+  \item FRECUENCIA
+  \item PKVAR
+  \item UDMPKUDM
+}
+Si tras todos los intentos no se encuentra información, lanza un error.
 }
 \description{
-Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andalucía
-para obtener una variable de la lista de variables meteorológicas de la base de datos CLIMA.
+Recupera información de una variable meteorológica desde el servicio SOAP de la Junta de Andalucía.
+La función reintenta automáticamente si la llamada falla, si el XML es inválido,
+o si no se encuentra información (`nrow(df) == 0`).
+}
+\details{
+La función utiliza `call_with_retry` para manejar errores de conexión,
+XML inválido y SOAP Faults. También reintenta automáticamente si el resultado está vacío.
 }
 \examples{
 \dontrun{
-user <- 'usuario'
-password <- 'usuario'
-idsesion <- getwsIDSesion(user,password)
-cvariable <- 'TI1'
-variable <- getwsVariables(cvariable,idsesion)
+idsesion <- getwsIDSesion("usuario","password")
+variable <- getwsVariables("TI1", idsesion)
 head(variable)
 }
 

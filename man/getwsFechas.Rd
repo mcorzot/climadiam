@@ -2,29 +2,42 @@
 % Please edit documentation in R/getwsFechas.R
 \name{getwsFechas}
 \alias{getwsFechas}
-\title{Obtener el identificador de una fecha de la base de datos del CLIMA}
+\title{Obtener el identificador de una fecha de la base de datos CLIMA con reintentos}
 \usage{
-getwsFechas(date, idsesion)
+getwsFechas(date, idsesion, retries = 3, wait = 2, timeout_sec = 5)
 }
 \arguments{
-\item{date}{fecha en formato DD/MM/YYYY}
+\item{date}{Character. Fecha en formato "DD/MM/YYYY".}
 
-\item{idsesion}{Character. Identificador de sesión válido proporcionado por \code{getwsIDSesion}.}
+\item{idsesion}{Character. Identificador de sesión válido para el servicio SOAP.}
+
+\item{retries}{Integer. Número máximo de intentos (por defecto 3).}
+
+\item{wait}{Numeric. Tiempo de espera entre reintentos en segundos (por defecto 2).}
+
+\item{timeout_sec}{Numeric. Tiempo máximo de espera por la respuesta del servicio SOAP en segundos (por defecto 5).}
 }
 \value{
-data.frame con columnas: \code{PKFEC}, \code{FECHA}.
+Devuelve un `data.frame` con los siguientes campos:
+\itemize{
+  \item PKFEC
+  \item FECHA
+}
+Si tras todos los intentos no se encuentra información, lanza un error.
 }
 \description{
-Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andalucía
-para obtener el identificador de una fecha de la base de datos CLIMA.
+Recupera información de una fecha meteorológica desde el servicio SOAP de la Junta de Andalucía.
+La función reintenta automáticamente si la llamada falla, si el XML es inválido,
+o si no se encuentra información (`nrow(df) == 0`).
+}
+\details{
+La función utiliza `call_with_retry` para manejar errores de conexión,
+XML inválido y SOAP Faults. También reintenta automáticamente si el resultado está vacío.
 }
 \examples{
 \dontrun{
-user <- 'usuario'
-password <- 'usuario'
-idsesion <- getwsIDSesion(user,password)
-date <- "20/10/2025"
-fecha <- getwsFechas(date,idsesion)
+idsesion <- getwsIDSesion("usuario", "password")
+fecha <- getwsFechas("20/10/2025", idsesion)
 head(fecha)
 }
 

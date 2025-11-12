@@ -2,17 +2,26 @@
 % Please edit documentation in R/getwsVariablesEstacionesListRaw.R
 \name{getwsVariablesEstacionesListRaw}
 \alias{getwsVariablesEstacionesListRaw}
-\title{Obtener la lista de estaciones asociadas a una variable a partir del
-identificador interno de la variable y devolverla como data.frame}
+\title{Obtener la lista de estaciones asociadas a una variable con reintentos}
 \usage{
-getwsVariablesEstacionesListRaw(varpkvar, idsesion)
+getwsVariablesEstacionesListRaw(
+  varpkvar,
+  idsesion,
+  retries = 3,
+  wait = 2,
+  timeout_sec = 5
+)
 }
 \arguments{
-\item{varpkvar}{\code{character}. Identificador de la variable (VARPKVAR)
-según el catálogo del servicio CLIMA.}
+\item{varpkvar}{Character. Identificador de la variable (VARPKVAR) según el catálogo del servicio CLIMA.}
 
-\item{idsesion}{\code{character}. Identificador de sesión válido proporcionado por
-el servicio \code{getwsIDSesion()}.}
+\item{idsesion}{Character. Identificador de sesión válido proporcionado por \code{getwsIDSesion}.}
+
+\item{retries}{Integer. Número máximo de intentos (por defecto 3).}
+
+\item{wait}{Numeric. Tiempo de espera entre reintentos en segundos (por defecto 2).}
+
+\item{timeout_sec}{Numeric. Tiempo máximo de espera por la respuesta del servicio SOAP en segundos (por defecto 5).}
 }
 \value{
 Un \code{data.frame} con las columnas:
@@ -27,17 +36,18 @@ Un \code{data.frame} con las columnas:
   \item \code{RANGOSUPERIOR} — Rango superior permitido para la variable.
   \item \code{VARPKVAR} — Identificador interno de la variable asociada.
 }
+Si tras todos los intentos no se encuentra información, lanza un error.
 }
 \description{
 Consulta el servicio web CLIMA de la Junta de Andalucía y devuelve un
 \code{data.frame} con los identificadores internos de las estaciones que
 registran datos para una variable determinada.
+La función reintenta automáticamente si la llamada falla, si el XML es inválido,
+o si no se encuentra información (`nrow(df) == 0`).
 }
 \examples{
 \dontrun{
-user <- 'usuario'
-password <- 'usuario'
-idsesion <- getwsIDSesion(user,password)
+idsesion <- getwsIDSesion("usuario","password")
 varpkvar <- '1' # TI1
 variables_estaciones <- getwsVariablesEstacionesListRaw(varpkvar, idsesion)
 head(variables_estaciones)

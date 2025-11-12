@@ -1,54 +1,90 @@
-#' @title Obtener una variable de la lista de variables  meteorológicas de la base de datos del CLIMA
+#' @title Obtener una variable meteorológica de la base de datos CLIMA con reintentos
 #'
 #' @description
-#' Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andalucía
-#' para obtener una variable de la lista de variables meteorológicas de la base de datos CLIMA.
+#' Recupera información de una variable meteorológica desde el servicio SOAP de la Junta de Andalucía.
+#' La función reintenta automáticamente si la llamada falla, si el XML es inválido,
+#' o si no se encuentra información (`nrow(df) == 0`).
 #'
-#' @param cvariable Character. Identificador de la variable.
-#' @param idsesion Character. Identificador de sesión válido proporcionado por \code{getwsIDSesion}.
+#' @param cvariable Character. Identificador de la variable a consultar.
+#' @param idsesion Character. Identificador de sesión válido para el servicio SOAP.
+#' @param retries Integer. Número máximo de intentos (por defecto 3).
+#' @param wait Numeric. Tiempo de espera entre reintentos en segundos (por defecto 2).
+#' @param timeout_sec Numeric. Tiempo máximo de espera por la respuesta del servicio SOAP en segundos (por defecto 5).
 #'
-#' @return data.frame con columnas: \code{CVARIABLE}, \code{DENOMINACION}, \code{FRECUENCIA}, \code{PKVAR},  \code{UDMPKUDM}.
+#' @return
+#' Devuelve un `data.frame` con los siguientes campos:
+#' \itemize{
+#'   \item CVARIABLE
+#'   \item DENOMINACION
+#'   \item FRECUENCIA
+#'   \item PKVAR
+#'   \item UDMPKUDM
+#' }
+#' Si tras todos los intentos no se encuentra información, lanza un error.
+#'
+#' @details
+#' La función utiliza `call_with_retry` para manejar errores de conexión,
+#' XML inválido y SOAP Faults. También reintenta automáticamente si el resultado está vacío.
 #'
 #' @examples
 #' \dontrun{
-#' user <- 'usuario'
-#' password <- 'usuario'
-#' idsesion <- getwsIDSesion(user,password)
-#' cvariable <- 'TI1'
-#' variable <- getwsVariables(cvariable,idsesion)
+#' idsesion <- getwsIDSesion("usuario","password")
+#' variable <- getwsVariables("TI1", idsesion)
 #' head(variable)
 #' }
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
-#' @importFrom plyr ldply
+#' @importFrom R.utils withTimeout
 #' @export
 #'
-getwsVariables <- function(cvariable,idsesion) {
+getwsVariables <- function(cvariable, idsesion, retries = 3, wait = 2, timeout_sec = 5) {
+  attempt <- 1
 
-  url <- paste0(
-    "http://www.juntadeandalucia.es/medioambiente/servtc5/climaws/services/ServicioClima",
-    "?method=getVariables&pksesion=", idsesion,"&CVARIABLE=", cvariable
-  )
-  xml_text <- call_with_retry(soap_get(url),"soap_get(getVariables)")
-  doc <- xmlParse(xml_text)
-  extract_nodes <- function(tag) xmlToDataFrame(nodes = XML::getNodeSet(doc, paste0("//", tag)), stringsAsFactors = FALSE)
+  while (attempt <= retries) {
+    url <- paste0(
+      "http://www.juntadeandalucia.es/medioambiente/servtc5/climaws/services/ServicioClima",
+      "?method=getVariables&pksesion=", idsesion, "&CVARIABLE=", cvariable
+    )
 
-  df <- data.frame(
-    CVARIABLE = unlist(extract_nodes("CVARIABLE")),
-    DENOMINACION = unlist(extract_nodes("DENOMINACION")),
-    FRECUENCIA = unlist(extract_nodes("FRECUENCIA")),
-    PKVAR = unlist(extract_nodes("PKVAR")),
-    UDMPKUDM = unlist(extract_nodes("UDMPKUDM")),
-    stringsAsFactors = FALSE
-  )
+    # Llamada SOAP con timeout y reintentos
+    xml_text <- call_with_retry(
+      expr = R.utils::withTimeout(
+        soap_get(url),
+        timeout = timeout_sec,
+        onTimeout = "error"
+      ),
+      name = "soap_get(getVariables)"
+    )
 
-  # Aviso en caso de que no se encuentre el cvariable
-  if(nrow(df) == 0){
-    message(paste0("No se ha encontrado la variable ",cvariable))
-  } else {
-    message(paste0("Obtenido dataframe de variables con ",nrow(df)," registros."))
+    doc <- XML::xmlParse(xml_text)
+
+    extract_nodes <- function(tag) {
+      XML::xmlToDataFrame(nodes = XML::getNodeSet(doc, paste0("//", tag)), stringsAsFactors = FALSE)
+    }
+
+    df <- data.frame(
+      CVARIABLE = unlist(extract_nodes("CVARIABLE")),
+      DENOMINACION = unlist(extract_nodes("DENOMINACION")),
+      FRECUENCIA = unlist(extract_nodes("FRECUENCIA")),
+      PKVAR = unlist(extract_nodes("PKVAR")),
+      UDMPKUDM = unlist(extract_nodes("UDMPKUDM")),
+      stringsAsFactors = FALSE
+    )
+
+    if (nrow(df) > 0) {
+      message(paste0("Obtenido dataframe de variables con ", nrow(df), " registros."))
+      return(df)
+    } else {
+      warning(sprintf(
+        "No se encontr\u00F3 la variable '%s' (intento %d/%d). Reintentando en %d segundos...",
+        cvariable, attempt, retries, wait
+      ), call. = FALSE)
+      Sys.sleep(wait)
+    }
+
+    attempt <- attempt + 1
   }
 
-  return(df)
-
+  stop(sprintf("No se pudo obtener informaci\u00F3n de la variable '%s' tras %d intentos.", cvariable, retries))
 }
+

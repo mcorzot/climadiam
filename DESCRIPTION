@@ -12,6 +12,7 @@ LazyDataCompression: xz
 Imports:
     curl,
     plyr,
+    R.utils,
     RCurl,
     XML
 RoxygenNote: 7.3.3

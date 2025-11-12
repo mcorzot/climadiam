@@ -2,30 +2,56 @@
 % Please edit documentation in R/getwsEstaciones.R
 \name{getwsEstaciones}
 \alias{getwsEstaciones}
-\title{Obtener una estación de la lista de estaciones de la base de datos del CLIMA}
+\title{Obtener información de estaciones con reintentos automáticos}
 \usage{
-getwsEstaciones(cestacion, idsesion)
+getwsEstaciones(cestacion, idsesion, retries = 3, wait = 2, timeout_sec = 5)
 }
 \arguments{
-\item{cestacion}{Character. Identificador de la estación.}
+\item{cestacion}{Character. Código de la estación a consultar.}
 
-\item{idsesion}{Character. Identificador de sesión válido proporcionado por \code{getwsIDSesion}.}
+\item{idsesion}{Character. Identificador de sesión válido para el servicio SOAP.}
+
+\item{retries}{Integer. Número máximo de intentos (por defecto 3).}
+
+\item{wait}{Numeric. Tiempo de espera entre reintentos en segundos (por defecto 2).}
+
+\item{timeout_sec}{Numeric. Tiempo máximo de espera por la respuesta del servicio SOAP en segundos (por defecto 5).}
 }
 \value{
-data.frame con columnas: \code{ACLPKACL}, \code{AGEPKAGE}, \code{CESTACION}, \code{COMPKCOM}, etcétera.
+Devuelve un `data.frame` con los campos de la estación:
+\itemize{
+  \item ACLPKACL
+  \item AGEPKAGE
+  \item CESTACION
+  \item COMPKCOM
+  \item COORDENADAX
+  \item COORDENADAY
+  \item COORDENADAZ
+  \item DENOMINACION
+  \item ESTAPKESTA
+  \item GESPKGES
+  \item LATITUD
+  \item LONGITUD
+  \item MODELO
+  \item MUNMUNICIPIO
+  \item MUNPROVINCIA
+  \item PKEST
+  \item REDPKRED
+}
+Si tras todos los intentos no se encuentra información, lanza un error.
 }
 \description{
-Esta función realiza una llamada SOAP al servicio de clima de la Junta de Andalucía
-para obtener los datos de una estación meteorológica de la base de datos CLIMA.
+Recupera información de una estación meteorológica desde el servicio SOAP de la Junta de Andalucía.
+La función reintenta automáticamente si la llamada falla, si el XML es inválido,
+o si no se encuentra información (`nrow(df) == 0`).
+}
+\details{
+La función utiliza `call_with_retry` para manejar errores de conexión,
+XML inválido y SOAP Faults. También reintenta automáticamente si el resultado está vacío.
 }
 \examples{
 \dontrun{
-user <- 'usuario'
-password <- 'usuario'
-idsesion <- getwsIDSesion(user,password)
-cestacion <- 'EARM22'
-estacion <- getwsEstaciones(cestacion,idsesion)
-head(estacion)
+df <- getwsEstaciones("1234", "abc123")
 }
 
 }

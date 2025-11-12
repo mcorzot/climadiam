@@ -2,23 +2,47 @@
 % Please edit documentation in R/getwsDatosExisteEstacionesListRaw.R
 \name{getwsDatosExisteEstacionesListRaw}
 \alias{getwsDatosExisteEstacionesListRaw}
-\title{Obtener la lista de estaciones con datos existentes (en bruto)}
+\title{Obtener la lista de estaciones con datos existentes (en bruto) con reintentos}
 \usage{
-getwsDatosExisteEstacionesListRaw(idsesion, pkest = NULL)
+getwsDatosExisteEstacionesListRaw(
+  idsesion,
+  pkest = NULL,
+  retries = 3,
+  wait = 2,
+  timeout_sec = 5
+)
 }
 \arguments{
-\item{idsesion}{\code{character}. Identificador de sesión válido obtenido mediante \code{getwsIDSesion()}.}
+\item{idsesion}{Character. Identificador de sesión válido obtenido mediante \code{getwsIDSesion()}.}
 
-\item{pkest}{\code{character}. Código de estación (opcional, por defecto todas).}
+\item{pkest}{Character. Código de estación (opcional, por defecto todas).}
+
+\item{retries}{Integer. Número máximo de intentos en caso de fallo o resultado vacío (por defecto 3).}
+
+\item{wait}{Numeric. Tiempo de espera entre reintentos en segundos (por defecto 2).}
+
+\item{timeout_sec}{Numeric. Tiempo máximo de espera por la respuesta del servicio SOAP en segundos (por defecto 5).}
 }
 \value{
-Un \code{data.frame} con las columnas devueltas por el servicio (por ejemplo: \code{ESTPKEST}, \code{FECFINDATOS}, \code{FECHACARGA}, \code{FECINICIODATOS}, \code{LEXISTE}, \code{PKDEE}
+Un \code{data.frame} con las columnas devueltas por el servicio:
+\itemize{
+  \item \code{ESTPKEST} — Identificador interno de la estación.
+  \item \code{FECFINDATOS} — Fecha final de los datos.
+  \item \code{FECHACARGA} — Fecha de carga de los datos.
+  \item \code{FECINICIODATOS} — Fecha inicial de los datos.
+  \item \code{LEXISTE} — Indicador lógico de existencia de datos.
+  \item \code{PKDEE} — Identificador interno del registro.
+}
+Si tras todos los intentos no se obtiene información, se lanza un error.
 }
 \description{
 Consulta el servicio web CLIMA de la Junta de Andalucía mediante el método
 \code{getDatosExisteEstacionesList}, que devuelve la lista de estaciones con datos
-existentes según los parámetros de búsqueda. Si se introduce el identificador
-interno de una estación, devuelve sólo el registro solicitado
+existentes según los parámetros de búsqueda.
+Si se introduce el identificador interno de una estación, devuelve sólo el registro solicitado.
+
+Esta versión incluye reintentos automáticos y control de tiempo de espera (timeout)
+para garantizar la estabilidad ante errores o respuestas vacías del servicio SOAP.
 }
 \examples{
 \dontrun{
@@ -26,7 +50,7 @@ user <- 'usuario'
 password <- 'usuario'
 idsesion <- getwsIDSesion(user,password)
 pkest <- '183' # EARM22
-existencias_estaciones <- getwsDatosExisteEstacionesListRaw(idsesion,pkest)
+existencias_estaciones <- getwsDatosExisteEstacionesListRaw(idsesion, pkest)
 head(existencias_estaciones)
 }
 
