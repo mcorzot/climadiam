@@ -4,7 +4,7 @@
 \alias{call_with_retry}
 \title{Ejecutar una expresión con reintentos automáticos}
 \usage{
-call_with_retry(expr, name, retries = 3, wait = 2)
+call_with_retry(expr, name, retries = 5, wait = 3)
 }
 \arguments{
 \item{expr}{Expresión a evaluar (por ejemplo, una llamada a una función que devuelve XML).}

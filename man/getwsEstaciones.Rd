@@ -4,7 +4,7 @@
 \alias{getwsEstaciones}
 \title{Obtener información de estaciones con reintentos automáticos}
 \usage{
-getwsEstaciones(cestacion, idsesion, retries = 3, wait = 2, timeout_sec = 5)
+getwsEstaciones(cestacion, idsesion, retries = 5, wait = 3, timeout_sec = 5)
 }
 \arguments{
 \item{cestacion}{Character. Código de la estación a consultar.}

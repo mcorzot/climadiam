@@ -29,7 +29,7 @@
 #' @importFrom XML xmlParse
 #' @export
 #'
-call_with_retry <- function(expr, name, retries = 3, wait = 2) {
+call_with_retry <- function(expr, name, retries = 5, wait = 3) {
   attempt <- 1
   while (attempt <= retries) {
     result <- try(expr, silent = TRUE)

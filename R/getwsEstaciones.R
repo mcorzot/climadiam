@@ -46,7 +46,7 @@
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @importFrom R.utils withTimeout
 #' @export
-getwsEstaciones <- function(cestacion, idsesion, retries = 3, wait = 2, timeout_sec = 5) {
+getwsEstaciones <- function(cestacion, idsesion, retries = 5, wait = 3, timeout_sec = 5) {
   attempt <- 1
 
   while (attempt <= retries) {

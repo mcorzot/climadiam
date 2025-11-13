@@ -4,7 +4,7 @@
 \alias{getwsVariables}
 \title{Obtener una variable meteorológica de la base de datos CLIMA con reintentos}
 \usage{
-getwsVariables(cvariable, idsesion, retries = 3, wait = 2, timeout_sec = 5)
+getwsVariables(cvariable, idsesion, retries = 5, wait = 3, timeout_sec = 5)
 }
 \arguments{
 \item{cvariable}{Character. Identificador de la variable a consultar.}

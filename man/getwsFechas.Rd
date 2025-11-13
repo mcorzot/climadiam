@@ -4,7 +4,7 @@
 \alias{getwsFechas}
 \title{Obtener el identificador de una fecha de la base de datos CLIMA con reintentos}
 \usage{
-getwsFechas(date, idsesion, retries = 3, wait = 2, timeout_sec = 5)
+getwsFechas(date, idsesion, retries = 5, wait = 3, timeout_sec = 5)
 }
 \arguments{
 \item{date}{Character. Fecha en formato "DD/MM/YYYY".}

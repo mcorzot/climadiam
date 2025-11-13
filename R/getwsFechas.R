@@ -34,7 +34,7 @@
 #' @importFrom R.utils withTimeout
 #' @export
 #'
-getwsFechas <- function(date, idsesion, retries = 3, wait = 2, timeout_sec = 5) {
+getwsFechas <- function(date, idsesion, retries = 5, wait = 3, timeout_sec = 5) {
   attempt <- 1
 
   while (attempt <= retries) {

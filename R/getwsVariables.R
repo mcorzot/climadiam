@@ -37,7 +37,7 @@
 #' @importFrom R.utils withTimeout
 #' @export
 #'
-getwsVariables <- function(cvariable, idsesion, retries = 3, wait = 2, timeout_sec = 5) {
+getwsVariables <- function(cvariable, idsesion, retries = 5, wait = 3, timeout_sec = 5) {
   attempt <- 1
 
   while (attempt <= retries) {
