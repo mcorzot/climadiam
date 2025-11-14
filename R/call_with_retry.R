@@ -27,6 +27,7 @@
 #' }
 #'
 #' @importFrom XML xmlParse
+#' @importFrom stats runif
 #' @export
 #'
 call_with_retry <- function(expr, name, retries = 5, wait = 3) {
@@ -49,11 +50,15 @@ call_with_retry <- function(expr, name, retries = 5, wait = 3) {
 
     # Si llega aqui, el intento ha fallado
     if (attempt < retries) {
+      # Pausa aleatoria entre 1 y 3 segundos
+      pause <- runif(1, 1, 3)
+
       warning(sprintf(
-        "Error al ejecutar '%s' (intento %d/%d). Reintentando en %.1f segundos...",
-        name, attempt, retries, wait
+        "Error al ejecutar '%s' (intento %d/%d). Reintentando en %.2f segundos...",
+        name, attempt, retries, pause
       ), call. = FALSE)
-      Sys.sleep(wait)
+
+      Sys.sleep(pause)
     }
 
     attempt <- attempt + 1

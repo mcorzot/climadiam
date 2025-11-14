@@ -1,7 +1,7 @@
 ---
 title: "climadiam: Paquete R para consultar datos climáticos de Andalucía"
 author: "Mariano Corzo Toscano"
-date: "2025-11-13"
+date: "2025-11-14"
 output:
   html_document:
     toc: true
@@ -12,6 +12,11 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+# Instalar 'remotes', 'ggplot2' y 'dplyr' si no están instalados
+list.of.packages <- c("remotes","ggplot2","dplyr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+library(remotes)
 library(ggplot2)
 library(dplyr)
 ```
@@ -34,20 +39,13 @@ datos meteorológicos y ambientales, incluyendo:
 
 ------------------------------------------------------------------------
 
-# 🚀 Instalación y carga del paquete
+# 🚀 Instalación y carga del paquete climadiam
 
-```{r install, collapse=TRUE}
-# Instalar 'remotes' si no está instalado
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
+```{r install_load, collapse=FALSE}
 # Instalar 'climadiam' desde GitHub solo si no está instalado
-if (!requireNamespace("climadiam", quietly = TRUE)) {
-  remotes::install_github("mcorzot/climadiam")
-}
-```
-
-```{r load, collapse=FALSE}
+list.of.packages <- c("climadiam")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) remotes::install_github(paste0("mcorzot/",new.packages))
 # Cargar el paquete
 library(climadiam)
 ```
@@ -75,30 +73,40 @@ idsesion <- getwsIDSesion(user, password)
 
 ------------------------------------------------------------------------
 
-# 📚 Ejemplos básicos de uso
+# 📚 Ejemplos básicos de uso: lista de estaciones
 
 ```{r examples_basic, collapse=FALSE}
 estaciones <- getwsEstacionesList(idsesion)
 head(estaciones)
+```
+
+# 📚 Ejemplos básicos de uso: valor diario de una estación y variable
+
+```{r examples_basic2, collapse=FALSE}
 datos <- getwsDatosDiarios(idsesion, "EARM22", "TD1", "26/10/2025")
 head(datos)
 ```
 
 ------------------------------------------------------------------------
 
-# 🧪 Ejemplo práctico de acceso a datos: selección de fechas, variables y estaciones 
+# 📚 Ejemplo práctico de acceso a datos: selección de fechas, variables y estaciones 
 
-Obtención de fechas de ayer y antes de ayer: 
+Obtención de fecha de ayer: 
 
-```{r example_full_dates, collapse=FALSE}
-# Obtención de fechas a utilizar
+```{r example_full_dates_ayer, collapse=FALSE}
+# Obtención de fecha a utilizar
 date1 <- Sys.Date() - 1
 date1_char <- format(date1, "%d/%m/%Y")
 date1_char
+```
+
+Obtención de fecha de antes de ayer: 
+
+```{r example_full_dates_antes_de_ayer, collapse=FALSE}
+# Obtención de fecha a utilizar
 date2 <- Sys.Date() - 2
 date2_char <- format(date2, "%d/%m/%Y")
 date2_char
-
 ```
 
 Existencias de datos para la fecha de referencia (antes de ayer): 
@@ -112,14 +120,18 @@ sel_existencias <- existencias[!is.na(existencias$CESTACION) & !is.na(existencia
 head(sel_existencias[,c('CESTACION','FECINICIODATOS','FECFINDATOS')])
 ```
 
-Estaciones (teniendo en cuenta existencias) y variables: 
+Estaciones (teniendo en cuenta existencias): 
 
-```{r example_full_est_vars, collapse=FALSE}
+```{r example_full_est, collapse=FALSE}
 # Características básicas de las estaciones seleccionadas
 estaciones     <- getwsEstacionesList(idsesion)
 sel_estaciones <- estaciones[estaciones$CESTACION %in% sel_existencias$CESTACION, ]
 head(sel_estaciones[,c('CESTACION','DENOMINACION','LATITUD','LONGITUD')])
+```
 
+Variables: 
+
+```{r example_full_vars, collapse=FALSE}
 # Características de las variables seleccionadas
 cvariables <- c("TI1", "PI1", "TD1", "TD2", "TD4","PD23")
 variables <- data.frame()
@@ -130,16 +142,18 @@ for (cvariable in cvariables) {
 head(variables[,c('CVARIABLE','DENOMINACION')])
 ```
 
-# 🧪 Ejemplo práctico de acceso a datos intradiarios de ayer
+# 📚 Ejemplo práctico de acceso a datos intradiarios de ayer
 
 Se usa la función "getwsDatosIntradiariosMulti" que requiere los **identificadores** de los parámetros de la consulta
 
-```{r example_full_intra, collapse=TRUE, eval=FALSE}
-# Datos intradiarios
+```{r example_full_intra, collapse=TRUE, eval=TRUE}
+# Parámetros de la función
+# estaciones del dataframe "sel_estaciones"
 cvariables_int <- c("TI1","HI1")
 fechas_int <- date1_char
-datos_intradiarios1 <- data.frame()
-# Fragmentar la consulta por red para evitar saturar el servicio
+
+# Se fragmenta la consulta por red para evitar saturar el servicio
+datos_intradiarios1 <- data.frame() # Se crea dataframe en blanco para almacenar los datos
 for (i in 1:length(unique(sel_estaciones$REDPKRED))) {
   sel_estaciones_red <- sel_estaciones[sel_estaciones$REDPKRED == sel_estaciones$REDPKRED[i],]
   sel_cestaciones <- sel_estaciones_red$CESTACION
@@ -147,42 +161,39 @@ for (i in 1:length(unique(sel_estaciones$REDPKRED))) {
   datos_intradiarios1 <- rbind(datos_intradiarios1,sel_datos_intradiarios1)
 }
 head(datos_intradiarios1)
-print("Esto no se ejecuta")
 ```
-# 🧪 Alternativa de acceso a datos intradiarios de ayer en caso de inestabilidad del servicio
+# 📚 Alternativa de acceso a datos intradiarios de ayer en caso de inestabilidad del servicio
 
 Se usa la función "getwsDatosIntradiariosMultiRaw" que requiere los **identificadores internos** de los parámetros de la consulta
 
 ```{r example_full_intra2, collapse=FALSE}
 # Obtener identificadores internos de las variables intradiarias
 cvariables_int <- c("TI1","HI1")
-variables <- getwsVariablesList(idsesion) # lista de variables
+variables <- getwsVariablesList(idsesion) # lista de todas las variables
 sel_variables <- variables[variables$CVARIABLE %in% cvariables_int,]
 pkvars_int <- sel_variables$PKVAR
 
 # Obtener identificadores internos de las fechas
 date1      <- Sys.Date() - 1
 date1_char <- format(date1, format = "%d/%m/%Y")
-fechas <- getwsFechasList(idsesion)
+fechas <- getwsFechasList(idsesion) # lista de todas las fechas
 fecha <- fechas[fechas$FECHA == date1_char,]
-pkfec_int <- sel_fecha1$PKFEC
-pkfec_int_prev <- as.numeric(sel_fecha1$PKFEC) - 1 # pkfec del día previo
+pkfec_int <- fecha$PKFEC
+pkfec_int_prev <- as.numeric(fecha$PKFEC) - 1 # pkfec del día previo
 
-# Obtener lista de estaciones para luego iterar por ellas
-estaciones <- getwsEstacionesList(idsesion) # lista de estaciones
+# Obtener identificadores internos de las estaciones
+estaciones <- getwsEstacionesList(idsesion) # lista de todas las estaciones
 sel_estaciones <- estaciones[estaciones$CESTACION %in% sel_existencias$CESTACION, ]
 # Se descartan las estaciones PART003 y CAHA01 dado que el servicio falla al devolver datos con
 # intervalos de medida inferiores a 10 minutos
 sel_estaciones <- sel_estaciones[sel_estaciones$CESTACION != "PART003", ]
 sel_estaciones <- sel_estaciones[sel_estaciones$CESTACION != "CAHA01", ]
 
-# Se crea dataframe en blanco para almacenar los datos
-datos_intradiarios1_alt <- data.frame()
-
 # Consulta con la función "getwsDatosIntradiariosMultiRaw" y los identificadores internos
 # Se obtienen datos del día objetivo y el día previo ya que en CLIMA el dato del día 1 a las 00:00
 # se almacena como el dato de las 24:00 del día anterior
-# Fragmentar la consulta por red para evitar saturar el servicio
+# Se fragmenta la consulta por red para evitar saturar el servicio
+datos_intradiarios1_alt <- data.frame() # Se crea dataframe en blanco para almacenar los datos
 for (red in unique(sel_estaciones$REDPKRED)) {
   sel_estaciones_red <- subset(sel_estaciones, REDPKRED == red)
   sel_pkests    <- sel_estaciones_red$PKEST
@@ -224,41 +235,39 @@ datos_intradiarios1_alt <- merge(x = datos_intradiarios1_alt, y = fechas, by.x =
 datos_intradiarios1_alt <- data.frame(datos_intradiarios1_alt$CESTACION,datos_intradiarios1_alt$CVARIABLE,datos_intradiarios1_alt$FECHA,datos_intradiarios1_alt$HORA,datos_intradiarios1_alt$valor)
 colnames(datos_intradiarios1_alt) <- c('cestacion','cvariable','fecha','hora','valor')
 head(datos_intradiarios1_alt)
-
 ```
 
-# 🧪 Ejemplo práctico de acceso a datos diarios antes de ayer
+# 📚 Ejemplo práctico de acceso a datos diarios antes de ayer
 
 Se usa la función "getwsDatosDiariosMulti" que requiere los **identificadores** de los parámetros de la consulta
 
-```{r example_full_dia, collapse=TRUE, eval=FALSE}
+```{r example_full_dia, collapse=TRUE, eval=TRUE}
 # Datos diarios
 cestaciones <- sel_existencias$CESTACION
 cvariables_dia <- c("TD1","TD2","TD4","PD23")
 fechas_dia <- date2_char
 datos_diarios2 <- getwsDatosDiariosMulti(idsesion, cestaciones, cvariables_dia, fechas_dia)
 head(datos_diarios2)
-print("Esto no se ejecuta")
 ```
-# 🧪 Ejemplo práctico de acceso a datos diarios antes de ayer
+# 📚 Alternativa de acceso a datos diarios antes de ayer
 
 Se usa la función "getwsDatosDiariosMultiRaw" que requiere los **identificadores internos** de los parámetros de la consulta
 
 ```{r example_full_dia2, collapse=FALSE}
-# Obtener identificadores internos de las variables diarias
+# Obtener identificadores internos de las variables
 cvariables_dia <- c("TD1","TD2","TD4","PD23")
-variables <- getwsVariablesList(idsesion) # lista de variables
+variables <- getwsVariablesList(idsesion) # lista de todas las variables
 sel_variables_dia <- variables[variables$CVARIABLE %in% cvariables_dia,]
 pkvars_dia <- sel_variables_dia$PKVAR
 
 # Obtener identificadores internos de las fechas
 fechas_dia <- date2_char
 date2_char <- format(date2, format = "%d/%m/%Y")
-fechas <- getwsFechasList(idsesion)
+#fechas <- getwsFechasList(idsesion) # ejecutar sólo si no se hizo previamente
 fecha <- fechas[fechas$FECHA == date2_char,]
 pkfec_dia <- fecha$PKFEC
 
-# Obtener lista de estaciones para luego iterar por ellas
+# Obtener identificadores internos de las estaciones
 estaciones <- getwsEstacionesList(idsesion) # lista de estaciones
 sel_estaciones <- estaciones[estaciones$CESTACION %in% sel_existencias$CESTACION, ]
 # Se descartan las estaciones PART003 y CAHA01 dado que el servicio falla al devolver datos con
@@ -266,13 +275,9 @@ sel_estaciones <- estaciones[estaciones$CESTACION %in% sel_existencias$CESTACION
 sel_estaciones <- sel_estaciones[sel_estaciones$CESTACION != "PART003", ]
 sel_estaciones <- sel_estaciones[sel_estaciones$CESTACION != "CAHA01", ]
 
-# Se crea dataframe en blanco para almacenar los datos
-datos_diarios2_alt <- data.frame()
-
 # Consulta con la función "getwsDatosDiariosMultiRaw" y los identificadores internos
-# Se obtienen datos del día objetivo y el día previo ya que en CLIMA el dato del día 1 a las 00:00
-# se almacena como el dato de las 24:00 del día anterior
 # Fragmentar la consulta por red para evitar saturar el servicio
+datos_diarios2_alt <- data.frame() # Se crea dataframe en blanco para almacenar los datos
 for (red in unique(sel_estaciones$REDPKRED)) {
   sel_estaciones_red <- subset(sel_estaciones, REDPKRED == red)
   sel_pkests    <- sel_estaciones_red$PKEST
@@ -299,7 +304,7 @@ head(datos_diarios2_alt)
 
 ------------------------------------------------------------------------
 
-# 📊 Visualización de ejemplo
+# 📊 Visualización gráfica de datos intradiarios
 
 ```{r plot_example, collapse=TRUE}
 # Selección de las cuatro primeras series y crear una columna de fecha-hora combinada
@@ -324,8 +329,13 @@ ggplot(datos_int, aes(x = datetime, y = valor, color = cvariable, group = cvaria
     plot.title = element_text(face = "bold", hjust = 0.5),
     legend.position = "bottom"
   )
+```
 
-# Selección de datos de TD1
+
+# 📊 Visualización gráfica de datos diarios
+
+```{r plot_example2, collapse=TRUE}
+# Selección de datos de TD2
 datos_dia <- datos_diarios2_alt[datos_diarios2_alt$cvariable == 'TD2',]
 # Histograma de frecuencias de datos de temperatura diaria
 ggplot(datos_dia, aes(x = valor)) +
@@ -343,7 +353,7 @@ ggplot(datos_dia, aes(x = valor)) +
 
 ------------------------------------------------------------------------
 
-# 🧑‍💻 Autoría y contacto
+# 💻 Autoría y contacto
 
 Desarrollado por **mcorzot**. Repositorio oficial:
 <https://github.com/mcorzot/climadiam>

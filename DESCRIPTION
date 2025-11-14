@@ -14,5 +14,6 @@ Imports:
     plyr,
     R.utils,
     RCurl,
+    stats,
     XML
 RoxygenNote: 7.3.3

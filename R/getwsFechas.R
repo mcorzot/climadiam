@@ -32,6 +32,7 @@
 #'
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @importFrom R.utils withTimeout
+#' @importFrom stats runif
 #' @export
 #'
 getwsFechas <- function(date, idsesion, retries = 5, wait = 3, timeout_sec = 5) {
@@ -69,6 +70,8 @@ getwsFechas <- function(date, idsesion, retries = 5, wait = 3, timeout_sec = 5) 
         date, attempt, retries, wait
       ), call. = FALSE)
       Sys.sleep(wait)
+      # Pausa aleatoria entre 1 y 3 segundos
+      Sys.sleep(runif(1, 1, 3))
     }
 
     attempt <- attempt + 1

@@ -38,6 +38,7 @@
 #'
 #' @importFrom XML xmlParse getNodeSet xmlToDataFrame
 #' @importFrom R.utils withTimeout
+#' @importFrom stats runif
 #' @export
 #'
 getwsVariablesEstacionesListRaw <- function(varpkvar, idsesion, retries = 3, wait = 2, timeout_sec = 5) {
@@ -88,6 +89,8 @@ getwsVariablesEstacionesListRaw <- function(varpkvar, idsesion, retries = 3, wai
         varpkvar, attempt, retries, wait
       ), call. = FALSE)
       Sys.sleep(wait)
+      # Pausa aleatoria entre 1 y 3 segundos
+      Sys.sleep(runif(1, 1, 3))
     }
 
     attempt <- attempt + 1

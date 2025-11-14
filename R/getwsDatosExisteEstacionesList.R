@@ -25,9 +25,13 @@
 #' @importFrom XML xmlParse xmlToDataFrame getNodeSet
 #' @importFrom RCurl getURL
 #' @importFrom plyr ldply
+#' @importFrom stats runif
 #' @export
 #'
 getwsDatosExisteEstacionesList <- function(idsesion,cestacion = NULL) {
+
+  # Pausa aleatoria entre 1 y 3 segundos
+  Sys.sleep(runif(1, 1, 3))
 
   if(is.null(cestacion)){
     # Si cestacion es NULL, pkest es NULL
